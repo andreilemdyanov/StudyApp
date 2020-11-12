@@ -10,4 +10,6 @@
     <string name="name_actor_2">Chris Evans</string>
     <string name="name_actor_3">Mark Ruffalo</string>
     <string name="name_actor_4">Chris Hemsworth</string>
+    <string name="back">Back</string>
+    <string name="age_rate">13+</string>
 </resources>
