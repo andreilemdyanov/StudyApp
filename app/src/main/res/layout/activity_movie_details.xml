@@ -15,11 +15,19 @@
         <ImageView
             android:id="@+id/back_main"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="298dp"
             android:scaleType="centerCrop"
             android:src="@drawable/orig"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="298dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/gradient"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,21 +60,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/normal_margin"
+            android:layout_marginTop="226dp"
             android:background="@drawable/ic_rectangle"
             android:fontFamily="@font/roboto_black"
             android:gravity="center"
             android:text="@string/age_rate"
             android:textColor="@color/white"
             android:textSize="@dimen/small_text"
-            app:layout_constraintBottom_toBottomOf="@+id/back_main"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="254dp"
             android:layout_marginEnd="@dimen/default_margin"
             android:fontFamily="@font/roboto_black"
             android:gravity="start"
@@ -76,9 +85,8 @@
             android:textColor="@color/white"
             android:textSize="@dimen/large_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_main" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/genre"
@@ -211,7 +219,6 @@
             android:src="@drawable/robert_downey"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/photo_actor_2"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cast"
@@ -227,7 +234,6 @@
             android:src="@drawable/chris_evans"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/photo_actor_3"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/photo_actor_1"
             app:layout_constraintTop_toBottomOf="@+id/cast"
             tools:src="@tools:sample/avatars" />
@@ -242,7 +248,6 @@
             android:src="@drawable/mark_ruffalo"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/photo_actor_4"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/photo_actor_2"
             app:layout_constraintTop_toBottomOf="@+id/cast"
             tools:src="@tools:sample/avatars" />
@@ -257,7 +262,6 @@
             android:src="@drawable/chris_hemsworth"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/photo_actor_3"
             app:layout_constraintTop_toBottomOf="@+id/cast"
             tools:src="@tools:sample/avatars" />
