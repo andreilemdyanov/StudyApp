@@ -12,6 +12,16 @@
         android:layout_height="wrap_content"
         tools:context=".MovieDetailsActivity">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_begin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/back_main"
             android:layout_width="0dp"
@@ -35,10 +45,10 @@
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="59dp"
             android:src="@drawable/ic_arrow"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -59,7 +69,6 @@
             android:id="@+id/age_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="226dp"
             android:background="@drawable/ic_rectangle"
             android:fontFamily="@font/roboto_black"
@@ -67,14 +76,13 @@
             android:text="@string/age_rate"
             android:textColor="@color/white"
             android:textSize="@dimen/small_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="254dp"
             android:layout_marginEnd="@dimen/default_margin"
             android:fontFamily="@font/roboto_black"
@@ -85,30 +93,28 @@
             android:textColor="@color/white"
             android:textSize="@dimen/large_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/small_margin"
             android:fontFamily="@font/roboto_light"
             android:text="@string/genre"
             android:textColor="@color/pink"
             android:textSize="@dimen/normal_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/title_name" />
 
         <ImageView
             android:id="@+id/star_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/normal_margin"
             android:src="@drawable/ic_star_icon"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/genre" />
 
         <ImageView
@@ -168,20 +174,18 @@
             android:id="@+id/story_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/large_margin"
             android:fontFamily="@font/roboto_black"
             android:text="@string/story_name"
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/counter_reviews" />
 
         <TextView
             android:id="@+id/story_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:alpha="0.75"
@@ -193,34 +197,32 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/story_name" />
 
         <TextView
             android:id="@+id/cast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/large_margin"
             android:fontFamily="@font/roboto_black"
             android:text="@string/cast"
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/story_description" />
 
         <ImageView
             android:id="@+id/photo_actor_1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/small_margin"
             android:src="@drawable/robert_downey"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/photo_actor_2"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/start_line"
             app:layout_constraintTop_toBottomOf="@+id/cast"
             tools:src="@tools:sample/avatars" />
 
@@ -273,7 +275,6 @@
             app:layout_constraintEnd_toEndOf="@+id/photo_actor_1"
             app:layout_constraintStart_toStartOf="@+id/photo_actor_1"
             app:layout_constraintTop_toBottomOf="@+id/photo_actor_1" />
-
 
         <TextView
             android:id="@+id/name_actor_2"
