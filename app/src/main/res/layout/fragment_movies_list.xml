@@ -97,11 +97,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="@dimen/normal_small_margin"
+                android:src="@drawable/ic_like"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tv_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="@dimen/normal_small_margin"
                 android:layout_marginBottom="@dimen/extra_small_margin"
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/genre"
@@ -114,7 +123,7 @@
                 android:id="@+id/iv_star_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="@dimen/normal_small_margin"
                 android:layout_marginBottom="@dimen/normal_margin"
                 android:src="@drawable/ic_star_icon_pink_8"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_movie_preview"
@@ -160,7 +169,7 @@
                 android:id="@+id/tv_counter_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="@dimen/normal_small_margin"
                 android:fontFamily="@font/roboto_black"
                 android:text="@string/counter_reviews"
                 android:textColor="@color/gray"
