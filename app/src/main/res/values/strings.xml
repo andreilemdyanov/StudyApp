@@ -12,4 +12,7 @@
     <string name="name_actor_4">Chris Hemsworth</string>
     <string name="back">Back</string>
     <string name="age_rate">13+</string>
+    <string name="duration">137 MIN</string>
+    <string name="title_name_card">Avengers: End game</string>
+    <string name="movies_list">Movies List</string>
 </resources>
