@@ -10,4 +10,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/normal_text</item>
     </style>
+
+    <style name="ImageCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_image_card</item>
+        <item name="android:layout_margin">@dimen/border_margin</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
 </resources>

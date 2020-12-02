@@ -65,19 +65,13 @@
 
             <ImageView
                 android:id="@+id/iv_movie_preview"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_image_card"
-                android:layout_margin="@dimen/border_margin"
-                android:scaleType="centerCrop"
+                style="@style/ImageCard"
                 android:src="@drawable/movie_preview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_image_card"
-                android:layout_margin="@dimen/border_margin"
-                android:scaleType="centerCrop"
+                style="@style/ImageCard"
                 android:src="@drawable/mask_movie_preview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
