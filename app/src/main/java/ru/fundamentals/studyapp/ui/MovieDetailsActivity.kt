@@ -1,7 +1,9 @@
-package ru.fundamentals.studyapp
+package ru.fundamentals.studyapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.fundamentals.studyapp.R
+import ru.fundamentals.studyapp.data.Movie
 
 class MovieDetailsActivity : AppCompatActivity(), FragmentMoviesList.ClickListener,
     FragmentMoviesDetails.ClickListener {
@@ -21,11 +23,11 @@ class MovieDetailsActivity : AppCompatActivity(), FragmentMoviesList.ClickListen
         else supportFragmentManager.findFragmentByTag(MOVIES_FRAGMENT_TAG) as? FragmentMoviesList
     }
 
-    override fun onMoviesDetailsClick() {
+    override fun onMoviesDetailsClick(movie: Movie) {
         supportFragmentManager.beginTransaction()
             .add(
                 R.id.fragment_container,
-                FragmentMoviesDetails.newInstance()
+                FragmentMoviesDetails.newInstance(movie)
             )
             .addToBackStack(null)
             .commit()

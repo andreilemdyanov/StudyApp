@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_blue">
+
+    <ImageView
+        android:id="@+id/iv_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_small_margin"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="21dp"
+        android:src="@drawable/ic_combined_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:fontFamily="@font/roboto_black"
+        android:text="@string/movies_list"
+        android:textColor="@color/white"
+
+        android:textSize="@dimen/normal_text"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_target"
+        app:layout_constraintStart_toEndOf="@id/iv_target"
+        app:layout_constraintTop_toTopOf="@+id/iv_target"
+        tools:text="Movies List" />
+</androidx.constraintlayout.widget.ConstraintLayout>
