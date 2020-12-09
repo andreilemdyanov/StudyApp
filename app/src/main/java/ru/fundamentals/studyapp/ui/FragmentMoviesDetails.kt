@@ -15,6 +15,7 @@ import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
 import ru.fundamentals.studyapp.data.Movie
 import ru.fundamentals.studyapp.ui.adapters.ActorsAdapter
+import ru.fundamentals.studyapp.util.setRating
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -55,7 +56,12 @@ class FragmentMoviesDetails : Fragment() {
             view.findViewById<TextView>(R.id.tv_title_name).text = movie?.title
             view.findViewById<TextView>(R.id.tv_genre).text = movie?.genre
             view.findViewById<TextView>(R.id.tv_counter_reviews).text = movie?.countReviews
-            setRating(view, movie?.rating!!)
+            setRating(
+                view,
+                movie?.rating!!,
+                R.drawable.ic_star_icon_pink_12,
+                R.drawable.ic_star_icon_gray_12
+            )
             actors = movie.actors
         }
         recycler = view.findViewById(R.id.rv_actors_list)
@@ -68,60 +74,6 @@ class FragmentMoviesDetails : Fragment() {
     override fun onDetach() {
         super.onDetach()
         clickListener = null
-    }
-
-    private fun setRating(view: View, numStars: Int) {
-        val iv1 = view.findViewById<ImageView>(R.id.iv_star_1)
-        val iv2 = view.findViewById<ImageView>(R.id.iv_star_2)
-        val iv3 = view.findViewById<ImageView>(R.id.iv_star_3)
-        val iv4 = view.findViewById<ImageView>(R.id.iv_star_4)
-        val iv5 = view.findViewById<ImageView>(R.id.iv_star_5)
-        when (numStars) {
-            0 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_12)
-            }
-            1 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_12)
-            }
-            2 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_12)
-            }
-            3 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_12)
-            }
-            4 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_12)
-            }
-            5 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv4.setImageResource(R.drawable.ic_star_icon_pink_12)
-                iv5.setImageResource(R.drawable.ic_star_icon_pink_12)
-            }
-
-        }
-
     }
 
     companion object {

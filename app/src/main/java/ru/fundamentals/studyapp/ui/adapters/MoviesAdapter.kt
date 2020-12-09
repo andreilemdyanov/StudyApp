@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Movie
+import ru.fundamentals.studyapp.util.setRating
 import java.lang.IllegalArgumentException
 
 class MoviesAdapter(
@@ -62,6 +63,7 @@ class MoviesAdapter(
         const val TYPE_HEADER = 0
         const val TYPE_MOVIE = 1
     }
+
     interface OnRecyclerMovieClicked {
         fun onClick(movie: Movie)
     }
@@ -84,60 +86,15 @@ class MovieHolder(itemView: View) : BaseViewHolder(itemView) {
         countReviews.text = movie.countReviews
         title.text = movie.title
         duration.text = movie.duration
-        setRating(itemView, movie.rating)
+        setRating(
+            itemView,
+            movie.rating,
+            R.drawable.ic_star_icon_pink_8,
+            R.drawable.ic_star_icon_gray_8
+        )
     }
 
-    private fun setRating(view: View, numStars: Int) {
-        val iv1 = view.findViewById<ImageView>(R.id.iv_star_1)
-        val iv2 = view.findViewById<ImageView>(R.id.iv_star_2)
-        val iv3 = view.findViewById<ImageView>(R.id.iv_star_3)
-        val iv4 = view.findViewById<ImageView>(R.id.iv_star_4)
-        val iv5 = view.findViewById<ImageView>(R.id.iv_star_5)
-        when (numStars) {
-            0 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_8)
-            }
-            1 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_8)
-            }
-            2 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_8)
-            }
-            3 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_gray_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_8)
-            }
-            4 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_gray_8)
-            }
-            5 -> {
-                iv1.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv2.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv3.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv4.setImageResource(R.drawable.ic_star_icon_pink_8)
-                iv5.setImageResource(R.drawable.ic_star_icon_pink_8)
-            }
-        }
-    }
+
 }
 
 class HeaderHolder(itemView: View) : BaseViewHolder(itemView) {
