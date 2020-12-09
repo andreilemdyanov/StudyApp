@@ -17,4 +17,6 @@
     <dimen name="width_card">170dp</dimen>
     <dimen name="height_card">296dp</dimen>
     <dimen name="height_image_card">248dp</dimen>
+    <!--    Actor size    -->
+    <dimen name="actor_image_size">84dp</dimen>
 </resources>
