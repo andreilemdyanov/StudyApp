@@ -15,4 +15,7 @@
     <string name="duration">137 MIN</string>
     <string name="title_name_card">Avengers: End game</string>
     <string name="movies_list">Movies List</string>
+    <string name="minimum_age">%1$d+</string>
+    <string name="number_of_ratings">%1$d REVIEWS</string>
+    <string name="runtime">%1$d MIN</string>
 </resources>

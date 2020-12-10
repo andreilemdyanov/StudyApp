@@ -2,19 +2,18 @@ package ru.fundamentals.studyapp.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Movie
+import ru.fundamentals.studyapp.data.loadMovies
 import ru.fundamentals.studyapp.ui.adapters.MoviesAdapter
-import ru.fundamentals.studyapp.util.DataUtil
 
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private var recycler: RecyclerView? = null
     private var clickListener: ClickListener? = null
@@ -25,18 +24,19 @@ class FragmentMoviesList : Fragment() {
             clickListener = context
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_movies_list, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler = view.findViewById(R.id.rv_movies_list)
-        val movies = DataUtil.generateMovies()
+        var movies: List<Movie>
+        CoroutineScope(Dispatchers.Main).launch {
+            movies = loadMovies(requireContext())
+            setAdapter(movies)
+        }
+    }
+
+    private suspend fun setAdapter(movies: List<Movie>) = withContext(Dispatchers.Main) {
         val adapter = MoviesAdapter(requireContext(), movies, clickListenerItem)
+        recycler?.adapter = adapter
         val manager =
             GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -45,7 +45,6 @@ class FragmentMoviesList : Fragment() {
             }
         }
         recycler?.layoutManager = manager
-        recycler?.adapter = adapter
     }
 
     override fun onDetach() {

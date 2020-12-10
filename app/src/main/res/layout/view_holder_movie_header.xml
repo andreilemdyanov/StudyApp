@@ -26,7 +26,6 @@
         android:fontFamily="@font/roboto_black"
         android:text="@string/movies_list"
         android:textColor="@color/white"
-
         android:textSize="@dimen/normal_text"
         app:layout_constraintBottom_toBottomOf="@+id/iv_target"
         app:layout_constraintStart_toEndOf="@id/iv_target"

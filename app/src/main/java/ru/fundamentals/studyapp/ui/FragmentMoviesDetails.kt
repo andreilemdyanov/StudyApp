@@ -15,7 +15,9 @@ import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
 import ru.fundamentals.studyapp.data.Movie
 import ru.fundamentals.studyapp.ui.adapters.ActorsAdapter
+import ru.fundamentals.studyapp.util.loadImage
 import ru.fundamentals.studyapp.util.setRating
+import kotlin.math.roundToInt
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -50,25 +52,35 @@ class FragmentMoviesDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var actors: List<Actor> = emptyList()
+        val tvAge = view.findViewById<TextView>(R.id.tv_minimum_age)
+        val tvTitle = view.findViewById<TextView>(R.id.tv_title_name)
+        val tvGenre = view.findViewById<TextView>(R.id.tv_genre)
+        val tvNumRatings = view.findViewById<TextView>(R.id.tv_number_of_ratings)
+        val tvOverview = view.findViewById<TextView>(R.id.tv_story_overview)
+        val tvCast = view.findViewById<TextView>(R.id.tv_cast)
+        val ivBackdrop = view.findViewById<ImageView>(R.id.iv_backdrop)
+
         arguments?.apply {
             val movie = getParcelable<Movie>(MOVIE)
-            view.findViewById<TextView>(R.id.tv_age_rate).text = movie?.ageRate
-            view.findViewById<TextView>(R.id.tv_title_name).text = movie?.title
-            view.findViewById<TextView>(R.id.tv_genre).text = movie?.genre
-            view.findViewById<TextView>(R.id.tv_counter_reviews).text = movie?.countReviews
+            tvAge.text = getString(R.string.minimum_age, movie?.minimumAge)
+            tvTitle.text = movie?.title
+            tvGenre.text = movie?.genres?.joinToString { it.name }
+            tvNumRatings.text = getString(R.string.number_of_ratings, movie?.numberOfRatings)
+            tvOverview.text = movie?.overview
+            loadImage(ivBackdrop, movie?.backdrop!!)
             setRating(
                 view,
-                movie?.rating!!,
+                movie.ratings.roundToInt(),
                 R.drawable.ic_star_icon_pink_12,
                 R.drawable.ic_star_icon_gray_12
             )
             actors = movie.actors
+            tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
         }
         recycler = view.findViewById(R.id.rv_actors_list)
-        val adapter = ActorsAdapter(requireContext(), actors)
         recycler?.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycler?.adapter = adapter
+        recycler?.adapter = ActorsAdapter(requireContext(), actors)
     }
 
     override fun onDetach() {
@@ -78,7 +90,6 @@ class FragmentMoviesDetails : Fragment() {
 
     companion object {
         private const val MOVIE = "movie"
-
 
         @JvmStatic
         fun newInstance(movie: Movie) = FragmentMoviesDetails().apply {

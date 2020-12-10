@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
+import ru.fundamentals.studyapp.util.loadImageRoundCorners
 
 class ActorsAdapter(
     context: Context,
@@ -36,6 +37,6 @@ class ActorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(actor: Actor) {
         name.text = actor.name
-        image.setImageResource(actor.image)
+        loadImageRoundCorners(image, actor.picture, R.drawable.ic_placeholder_actor_24)
     }
 }

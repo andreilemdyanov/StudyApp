@@ -9,8 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Movie
+import ru.fundamentals.studyapp.util.loadImageRoundCorners
 import ru.fundamentals.studyapp.util.setRating
-import java.lang.IllegalArgumentException
+import kotlin.math.roundToInt
 
 class MoviesAdapter(
     context: Context,
@@ -72,29 +73,28 @@ class MoviesAdapter(
 abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 class MovieHolder(itemView: View) : BaseViewHolder(itemView) {
+    private val context = itemView.context
     private val preview = itemView.findViewById<ImageView>(R.id.iv_movie_preview)
-    private val ageRate = itemView.findViewById<TextView>(R.id.tv_age_rate)
-    private val genre = itemView.findViewById<TextView>(R.id.tv_genre)
-    private val countReviews = itemView.findViewById<TextView>(R.id.tv_counter_reviews)
+    private val minimumAge = itemView.findViewById<TextView>(R.id.tv_minimum_age)
+    private val genres = itemView.findViewById<TextView>(R.id.tv_genre)
+    private val numberOfRatings = itemView.findViewById<TextView>(R.id.tv_number_of_ratings)
     private val title = itemView.findViewById<TextView>(R.id.tv_title_name)
-    private val duration = itemView.findViewById<TextView>(R.id.tv_duration)
+    private val runtime = itemView.findViewById<TextView>(R.id.tv_runtime)
 
     fun bind(movie: Movie) {
-        preview.setImageResource(movie.preview)
-        ageRate.text = movie.ageRate
-        genre.text = movie.genre
-        countReviews.text = movie.countReviews
+        loadImageRoundCorners(preview, movie.poster, R.drawable.ic_placeholder_movies_24)
+        minimumAge.text = context.getString(R.string.minimum_age, movie.minimumAge)
+        genres.text = movie.genres.joinToString { it.name }
+        numberOfRatings.text = context.getString(R.string.number_of_ratings, movie.numberOfRatings)
         title.text = movie.title
-        duration.text = movie.duration
+        runtime.text = context.getString(R.string.runtime, movie.runtime)
         setRating(
             itemView,
-            movie.rating,
+            movie.ratings.roundToInt(),
             R.drawable.ic_star_icon_pink_8,
             R.drawable.ic_star_icon_gray_8
         )
     }
-
-
 }
 
 class HeaderHolder(itemView: View) : BaseViewHolder(itemView) {

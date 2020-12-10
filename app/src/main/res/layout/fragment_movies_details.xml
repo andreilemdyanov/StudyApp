@@ -33,14 +33,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_back_main"
+            android:id="@+id/iv_backdrop"
             android:layout_width="0dp"
             android:layout_height="298dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/orig"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/orig" />
 
         <ImageView
             android:layout_width="0dp"
@@ -67,18 +67,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_age_rate"
+            android:id="@+id/tv_minimum_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:background="@drawable/ic_rectangle"
             android:fontFamily="@font/roboto_black"
             android:gravity="center"
-            android:text="@string/age_rate"
             android:textColor="@color/white"
             android:textSize="@dimen/small_text"
             app:layout_constraintBottom_toTopOf="@+id/tv_title_name"
-            app:layout_constraintStart_toEndOf="@+id/gl_start_line" />
+            app:layout_constraintStart_toEndOf="@+id/gl_start_line"
+            tools:text="@string/age_rate" />
 
         <TextView
             android:id="@+id/tv_title_name"
@@ -88,13 +88,13 @@
             android:gravity="start"
             android:lines="2"
             android:maxLines="2"
-            android:text="@string/movie_name"
             android:textColor="@color/white"
             android:textSize="@dimen/large_text"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_back_main"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_backdrop"
             app:layout_constraintEnd_toEndOf="@id/gl_end_line"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/iv_back_main" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_backdrop"
+            tools:text="@string/movie_name" />
 
         <TextView
             android:id="@+id/tv_genre"
@@ -102,20 +102,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:fontFamily="@font/roboto_light"
-            android:text="@string/genre"
             android:textColor="@color/pink"
             android:textSize="@dimen/normal_text"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_name"
+            tools:text="@string/genre" />
 
         <ImageView
             android:id="@+id/iv_star_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_margin"
-            android:src="@drawable/ic_star_icon_pink_12"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+            tools:src="@drawable/ic_star_icon_pink_12" />
 
         <ImageView
             android:id="@+id/iv_star_2"
@@ -123,9 +123,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/normal_margin"
-            android:src="@drawable/ic_star_icon_pink_12"
             app:layout_constraintStart_toEndOf="@+id/iv_star_1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+            tools:src="@drawable/ic_star_icon_pink_12" />
 
         <ImageView
             android:id="@+id/iv_star_3"
@@ -133,9 +133,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/normal_margin"
-            android:src="@drawable/ic_star_icon_pink_12"
             app:layout_constraintStart_toEndOf="@+id/iv_star_2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+            tools:src="@drawable/ic_star_icon_pink_12" />
 
         <ImageView
             android:id="@+id/iv_star_4"
@@ -143,9 +143,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/normal_margin"
-            android:src="@drawable/ic_star_icon_pink_12"
             app:layout_constraintStart_toEndOf="@+id/iv_star_3"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+            tools:src="@drawable/ic_star_icon_pink_12" />
 
         <ImageView
             android:id="@+id/iv_star_5"
@@ -153,22 +153,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginTop="@dimen/normal_margin"
-            android:src="@drawable/ic_star_icon_gray_12"
             app:layout_constraintStart_toEndOf="@+id/iv_star_4"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+            tools:src="@drawable/ic_star_icon_gray_12" />
 
         <TextView
-            android:id="@+id/tv_counter_reviews"
+            android:id="@+id/tv_number_of_ratings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/normal_margin"
             android:fontFamily="@font/roboto_black"
-            android:text="@string/counter_reviews"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal_text"
             app:layout_constraintBottom_toBottomOf="@+id/iv_star_5"
             app:layout_constraintStart_toEndOf="@+id/iv_star_5"
-            app:layout_constraintTop_toTopOf="@+id/iv_star_5" />
+            app:layout_constraintTop_toTopOf="@+id/iv_star_5"
+            tools:text="@string/counter_reviews" />
 
         <TextView
             android:id="@+id/tv_story_name"
@@ -180,10 +180,10 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/tv_counter_reviews" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_number_of_ratings" />
 
         <TextView
-            android:id="@+id/tv_story_description"
+            android:id="@+id/tv_story_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
@@ -192,12 +192,12 @@
             android:lineSpacingExtra="6sp"
             android:lines="4"
             android:maxLines="4"
-            android:text="@string/story_description"
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             app:layout_constraintEnd_toEndOf="@id/gl_end_line"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/tv_story_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_story_name"
+            tools:text="@string/story_description" />
 
         <TextView
             android:id="@+id/tv_cast"
@@ -209,7 +209,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             app:layout_constraintStart_toEndOf="@+id/gl_start_line"
-            app:layout_constraintTop_toBottomOf="@+id/tv_story_description" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_story_overview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_actors_list"
