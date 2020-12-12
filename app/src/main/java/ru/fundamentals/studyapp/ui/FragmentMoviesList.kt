@@ -6,9 +6,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.fundamentals.studyapp.R
-import ru.fundamentals.studyapp.data.Movie
+import ru.fundamentals.studyapp.data.MovieElement
 import ru.fundamentals.studyapp.data.loadMovies
 import ru.fundamentals.studyapp.ui.adapters.MoviesAdapter
 
@@ -27,15 +30,16 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler = view.findViewById(R.id.rv_movies_list)
-        var movies: List<Movie>
+        var movies: List<MovieElement>
         CoroutineScope(Dispatchers.Main).launch {
             movies = loadMovies(requireContext())
             setAdapter(movies)
         }
     }
 
-    private suspend fun setAdapter(movies: List<Movie>) = withContext(Dispatchers.Main) {
-        val adapter = MoviesAdapter(requireContext(), movies, clickListenerItem)
+    private suspend fun setAdapter(movies: List<MovieElement>) = withContext(Dispatchers.Main) {
+        val adapter = MoviesAdapter(requireContext(), clickListenerItem)
+        adapter.submitList(movies)
         recycler?.adapter = adapter
         val manager =
             GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
@@ -53,15 +57,16 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         clickListener = null
     }
 
-    private fun doOnClick(movie: Movie) {
+    private fun doOnClick(movie: MovieElement.Movie) {
         recycler?.let {
             clickListener?.onMoviesDetailsClick(movie)
         }
     }
 
     private val clickListenerItem = object : MoviesAdapter.OnRecyclerMovieClicked {
-        override fun onClick(movie: Movie) {
-            doOnClick(movie)
+        override fun onClick(movie: MovieElement) {
+            if (movie is MovieElement.Movie)
+                doOnClick(movie)
         }
     }
 
@@ -71,7 +76,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     interface ClickListener {
-        fun onMoviesDetailsClick(movie: Movie)
+        fun onMoviesDetailsClick(movie: MovieElement.Movie)
     }
 }
 

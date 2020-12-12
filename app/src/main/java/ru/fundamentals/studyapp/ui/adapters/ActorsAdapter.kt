@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
+import ru.fundamentals.studyapp.ui.ActorsCallback
 import ru.fundamentals.studyapp.util.loadImageRoundCorners
 
 class ActorsAdapter(
     context: Context,
-    var actors: List<Actor>,
-) : RecyclerView.Adapter<ActorHolder>() {
+) : ListAdapter<Actor, ActorHolder>(ActorsCallback()) {
 
     private var inflater = LayoutInflater.from(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
@@ -24,11 +25,6 @@ class ActorsAdapter(
     override fun onBindViewHolder(holder: ActorHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = actors.size
-
-    private fun getItem(position: Int): Actor = actors[position]
-
 }
 
 class ActorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

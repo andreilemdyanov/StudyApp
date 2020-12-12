@@ -68,19 +68,23 @@ internal fun parseActors(data: String): List<Actor> {
 }
 
 @Suppress("unused")
-internal suspend fun loadMovies(context: Context): List<Movie> = withContext(Dispatchers.IO) {
+internal suspend fun loadMovies(context: Context): List<MovieElement> = withContext(Dispatchers.IO) {
     val genresMap = loadGenres(context)
     val actorsMap = loadActors(context)
 
     val data = readAssetFileToString(context, "data.json")
-    parseMovies(data, genresMap, actorsMap)
+    val list = parseMovies(data, genresMap, actorsMap)
+    var newlist = list.toMutableList().apply {
+        add(0, MovieElement.Header(-1, "Header", "Some image"))
+    }
+    return@withContext newlist
 }
 
 internal fun parseMovies(
     data: String,
     genres: List<Genre>,
     actors: List<Actor>
-): List<Movie> {
+): List<MovieElement> {
     val genresMap = genres.associateBy { it.id }
     val actorsMap = actors.associateBy { it.id }
 
@@ -88,7 +92,7 @@ internal fun parseMovies(
 
     return jsonMovies.map { jsonMovie ->
         @Suppress("unused")
-        Movie(
+        (MovieElement.Movie(
             id = jsonMovie.id,
             title = jsonMovie.title,
             overview = jsonMovie.overview,
@@ -104,6 +108,6 @@ internal fun parseMovies(
             actors = jsonMovie.actors.map {
                 actorsMap[it] ?: throw IllegalArgumentException("Actor not found")
             }
-        )
+        ))
     }
 }

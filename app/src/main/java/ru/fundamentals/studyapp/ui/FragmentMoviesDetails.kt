@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
-import ru.fundamentals.studyapp.data.Movie
+import ru.fundamentals.studyapp.data.MovieElement
 import ru.fundamentals.studyapp.ui.adapters.ActorsAdapter
 import ru.fundamentals.studyapp.util.loadImage
 import ru.fundamentals.studyapp.util.setRating
@@ -61,7 +61,7 @@ class FragmentMoviesDetails : Fragment() {
         val ivBackdrop = view.findViewById<ImageView>(R.id.iv_backdrop)
 
         arguments?.apply {
-            val movie = getParcelable<Movie>(MOVIE)
+            val movie = getParcelable<MovieElement.Movie>(MOVIE)
             tvAge.text = getString(R.string.minimum_age, movie?.minimumAge)
             tvTitle.text = movie?.title
             tvGenre.text = movie?.genres?.joinToString { it.name }
@@ -81,7 +81,10 @@ class FragmentMoviesDetails : Fragment() {
         recycler?.setHasFixedSize(true)
         recycler?.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycler?.adapter = ActorsAdapter(requireContext(), actors)
+        val adapter = ActorsAdapter(requireContext())
+        adapter.submitList(actors)
+        recycler?.adapter = adapter
+
     }
 
     override fun onDetach() {
@@ -93,7 +96,7 @@ class FragmentMoviesDetails : Fragment() {
         private const val MOVIE = "movie"
 
         @JvmStatic
-        fun newInstance(movie: Movie) = FragmentMoviesDetails().apply {
+        fun newInstance(movie: MovieElement.Movie) = FragmentMoviesDetails().apply {
             arguments = Bundle().apply {
                 putParcelable(MOVIE, movie)
             }
