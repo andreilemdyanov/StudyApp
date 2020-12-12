@@ -78,6 +78,7 @@ class FragmentMoviesDetails : Fragment() {
             tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
         }
         recycler = view.findViewById(R.id.rv_actors_list)
+        recycler?.setHasFixedSize(true)
         recycler?.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recycler?.adapter = ActorsAdapter(requireContext(), actors)

@@ -45,6 +45,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
             }
         }
         recycler?.layoutManager = manager
+        recycler?.setHasFixedSize(true)
     }
 
     override fun onDetach() {
