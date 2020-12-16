@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1200"
+        motion:staggered="0.02">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="720"
+                android:scaleX="0"
+                android:scaleY="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/iv_star_1" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                motion:framePosition="15"
+                motion:motionTarget="@+id/iv_star_1" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="720"
+                android:scaleX="0"
+                android:scaleY="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/iv_star_2" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                motion:framePosition="30"
+                motion:motionTarget="@+id/iv_star_2" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="720"
+                android:scaleX="0"
+                android:scaleY="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/iv_star_3" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                motion:framePosition="45"
+                motion:motionTarget="@+id/iv_star_3" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="720"
+                android:scaleX="0"
+                android:scaleY="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/iv_star_4" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                motion:framePosition="60"
+                motion:motionTarget="@+id/iv_star_4" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="720"
+                android:scaleX="0"
+                android:scaleY="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/iv_star_5" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                motion:framePosition="75"
+                motion:motionTarget="@+id/iv_star_5" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/tv_number_of_ratings" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="95"
+                motion:motionTarget="@+id/tv_number_of_ratings" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/iv_star_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.3"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.35"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.4"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.45"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/iv_star_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintStart_toStartOf="@+id/iv_star_1"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintStart_toStartOf="@+id/iv_star_2"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintStart_toStartOf="@+id/iv_star_3"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        <Constraint
+            android:id="@+id/iv_star_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            motion:layout_constraintStart_toStartOf="@+id/iv_star_4"
+            motion:layout_constraintTop_toBottomOf="@id/tv_genre" />
+    </ConstraintSet>
+</MotionScene>

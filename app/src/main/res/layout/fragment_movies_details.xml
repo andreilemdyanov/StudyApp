@@ -33,6 +33,8 @@
                     android:layout_height="298dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/orig"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -40,6 +42,8 @@
                     android:layout_height="298dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -74,9 +78,11 @@
         android:background="@color/dark_blue"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layoutDescription="@xml/fragment_movies_details_xml_constraintlayout_scene">
 
             <TextView
                 android:id="@+id/tv_genre"
@@ -107,7 +113,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
-                app:layout_constraintStart_toEndOf="@id/iv_star_1"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -213,6 +218,6 @@
                 tools:orientation="horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.motion.widget.MotionLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,10 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
 import ru.fundamentals.studyapp.data.MovieElement
@@ -30,6 +35,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
     private var clickListener: ClickListener? = null
 
     private var tvAge: TextView? = null
+    private var motionLayout: MotionLayout? = null
     private var mIsImageHidden = false
     private var mMaxScrollSize = 0
 
@@ -49,6 +55,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         super.onViewCreated(view, savedInstanceState)
         var actors: List<Actor> = emptyList()
         tvAge = view.findViewById(R.id.tv_minimum_age)
+        motionLayout = view.findViewById(R.id.constraintLayout)
         val tvTitle = view.findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar)
         val tvGenre = view.findViewById<TextView>(R.id.tv_genre)
         val tvNumRatings = view.findViewById<TextView>(R.id.tv_number_of_ratings)
@@ -82,6 +89,11 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         val adapter = ActorsAdapter(requireContext())
         adapter.submitList(actors)
         recycler?.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        motionLayout?.transitionToEnd()
     }
 
     override fun onDetach() {
