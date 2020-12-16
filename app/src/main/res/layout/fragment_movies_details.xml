@@ -76,7 +76,7 @@
         android:background="@color/dark_blue"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -90,6 +90,8 @@
                 android:fontFamily="@font/roboto_light"
                 android:textColor="?attr/colorAccent"
                 android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/genre" />
 
             <ImageView
@@ -99,6 +101,8 @@
                 android:layout_below="@+id/tv_genre"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
             <ImageView
@@ -109,6 +113,8 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_toEndOf="@+id/iv_star_1"
+                app:layout_constraintStart_toEndOf="@id/iv_star_1"
+                app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
             <ImageView
@@ -119,6 +125,8 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_toEndOf="@+id/iv_star_2"
+                app:layout_constraintStart_toEndOf="@id/iv_star_2"
+                app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
             <ImageView
@@ -129,6 +137,8 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_toEndOf="@+id/iv_star_3"
+                app:layout_constraintStart_toEndOf="@id/iv_star_3"
+                app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
             <ImageView
@@ -139,6 +149,8 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_toEndOf="@+id/iv_star_4"
+                app:layout_constraintStart_toEndOf="@id/iv_star_4"
+                app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_gray_12" />
 
             <TextView
@@ -147,11 +159,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_genre"
                 android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_toEndOf="@+id/iv_star_5"
                 android:fontFamily="@font/roboto_black"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="@dimen/normal_text"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_star_5"
+                app:layout_constraintStart_toEndOf="@+id/iv_star_5"
+                app:layout_constraintTop_toTopOf="@id/iv_star_5"
                 tools:text="@string/counter_reviews" />
 
             <TextView
@@ -164,7 +177,9 @@
                 android:fontFamily="@font/roboto_black"
                 android:text="@string/story_name"
                 android:textColor="?attr/colorOnPrimary"
-                android:textSize="@dimen/normal_text" />
+                android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_star_1" />
 
             <TextView
                 android:id="@+id/tv_story_overview"
@@ -181,6 +196,8 @@
                 android:maxLines="4"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_story_name"
                 tools:text="@string/story_description" />
 
             <TextView
@@ -193,7 +210,9 @@
                 android:fontFamily="@font/roboto_black"
                 android:text="@string/cast"
                 android:textColor="?attr/colorOnPrimary"
-                android:textSize="@dimen/normal_text" />
+                android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_story_overview" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_actors_list"
@@ -204,12 +223,14 @@
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:scrollbars="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_cast"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/view_holder_actor"
                 tools:orientation="horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
