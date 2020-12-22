@@ -79,7 +79,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/motionLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutDescription="@xml/fragment_movies_details_xml_constraintlayout_scene">

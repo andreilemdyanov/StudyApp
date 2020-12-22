@@ -2,8 +2,12 @@ package ru.fundamentals.studyapp.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -13,13 +17,37 @@ import kotlinx.coroutines.withContext
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.MovieElement
 import ru.fundamentals.studyapp.data.loadMovies
+import ru.fundamentals.studyapp.databinding.FragmentMoviesDetailsBinding
+import ru.fundamentals.studyapp.databinding.FragmentMoviesListBinding
 import ru.fundamentals.studyapp.ui.adapters.MoviesAdapter
 
 
-class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list), Observer<List<MovieElement>> {
 
-    private var recycler: RecyclerView? = null
+    private var _binding: FragmentMoviesListBinding? = null
+    private val binding get() = _binding!!
+    lateinit var viewModel: MoviesViewModel
+    lateinit var adapter: MoviesAdapter
     private var clickListener: ClickListener? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.moviesList.observe(this.viewLifecycleOwner, this)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -29,18 +57,8 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler = view.findViewById(R.id.rv_movies_list)
-        var movies: List<MovieElement>
-        CoroutineScope(Dispatchers.Main).launch {
-            movies = loadMovies(requireContext())
-            setAdapter(movies)
-        }
-    }
-
-    private suspend fun setAdapter(movies: List<MovieElement>) = withContext(Dispatchers.Main) {
-        val adapter = MoviesAdapter(requireContext(), clickListenerItem)
-        adapter.submitList(movies)
-        recycler?.adapter = adapter
+        adapter = MoviesAdapter(requireContext(), clickListenerItem)
+        binding.rvMoviesList.adapter = adapter
         val manager =
             GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -48,8 +66,14 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
                 return if (adapter.isHeader(position)) manager.spanCount else 1
             }
         }
-        recycler?.layoutManager = manager
-        recycler?.setHasFixedSize(true)
+        binding.rvMoviesList.layoutManager = manager
+        binding.rvMoviesList.setHasFixedSize(true)
+    }
+
+    override fun onChanged(t: List<MovieElement>?) {
+        CoroutineScope(Dispatchers.Main).launch {
+            adapter.submitList(viewModel.moviesList.value)
+        }
     }
 
     override fun onDetach() {
@@ -57,8 +81,13 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         clickListener = null
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun doOnClick(movie: MovieElement.Movie) {
-        recycler?.let {
+        binding.rvMoviesList.let {
             clickListener?.onMoviesDetailsClick(movie)
         }
     }

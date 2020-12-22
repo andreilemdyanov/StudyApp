@@ -2,7 +2,9 @@ package ru.fundamentals.studyapp.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.Actor
 import ru.fundamentals.studyapp.data.MovieElement
+import ru.fundamentals.studyapp.databinding.FragmentMoviesDetailsBinding
 import ru.fundamentals.studyapp.ui.adapters.ActorsAdapter
 import ru.fundamentals.studyapp.util.loadImage
 import ru.fundamentals.studyapp.util.setRating
@@ -31,11 +34,9 @@ import kotlin.math.roundToInt
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
     OnOffsetChangedListener {
 
-    private var recycler: RecyclerView? = null
+    private var _binding: FragmentMoviesDetailsBinding? = null
+    private val binding get() = _binding!!
     private var clickListener: ClickListener? = null
-
-    private var tvAge: TextView? = null
-    private var motionLayout: MotionLayout? = null
     private var mIsImageHidden = false
     private var mMaxScrollSize = 0
 
@@ -51,28 +52,29 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var actors: List<Actor> = emptyList()
-        tvAge = view.findViewById(R.id.tv_minimum_age)
-        motionLayout = view.findViewById(R.id.constraintLayout)
-        val tvTitle = view.findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar)
-        val tvGenre = view.findViewById<TextView>(R.id.tv_genre)
-        val tvNumRatings = view.findViewById<TextView>(R.id.tv_number_of_ratings)
-        val tvOverview = view.findViewById<TextView>(R.id.tv_story_overview)
-        val tvCast = view.findViewById<TextView>(R.id.tv_cast)
-        val ivBackdrop = view.findViewById<ImageView>(R.id.iv_backdrop)
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
-        toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
-        view.findViewById<AppBarLayout>(R.id.app_bar).addOnOffsetChangedListener(this)
+        binding.toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
+        binding.appBar.addOnOffsetChangedListener(this)
         arguments?.apply {
             val movie = getParcelable<MovieElement.Movie>(MOVIE)
-            tvAge?.text = getString(R.string.minimum_age, movie?.minimumAge)
-            tvTitle.title = movie?.title
-            tvGenre.text = movie?.genres?.joinToString { it.name }
-            tvNumRatings.text = getString(R.string.number_of_ratings, movie?.numberOfRatings)
-            tvOverview.text = movie?.overview
-            loadImage(ivBackdrop, movie?.backdrop!!)
+            binding.tvMinimumAge.text = getString(R.string.minimum_age, movie?.minimumAge)
+            binding.collapsingToolbar.title = movie?.title
+            binding.tvGenre.text = movie?.genres?.joinToString { it.name }
+            binding.tvNumberOfRatings.text =
+                getString(R.string.number_of_ratings, movie?.numberOfRatings)
+            binding.tvStoryOverview.text = movie?.overview
+            loadImage(binding.ivBackdrop, movie?.backdrop!!)
             setRating(
                 view,
                 movie.ratings.roundToInt(),
@@ -80,20 +82,25 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 R.drawable.ic_star_icon_gray_12
             )
             actors = movie.actors
-            tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
+            binding.tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
         }
-        recycler = view.findViewById(R.id.rv_actors_list)
-        recycler?.setHasFixedSize(true)
-        recycler?.layoutManager =
+
+        binding.rvActorsList.setHasFixedSize(true)
+        binding.rvActorsList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val adapter = ActorsAdapter(requireContext())
         adapter.submitList(actors)
-        recycler?.adapter = adapter
+        binding.rvActorsList.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
-        motionLayout?.transitionToEnd()
+        binding.motionLayout.transitionToEnd()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onDetach() {
@@ -110,14 +117,14 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         if (currentScrollPercentage >= PERCENTAGE_TO_SHOW_IMAGE) {
             if (!mIsImageHidden) {
                 mIsImageHidden = true
-                ViewCompat.animate(tvAge!!).scaleY(0f).scaleX(0f).start()
+                ViewCompat.animate(binding.tvMinimumAge).scaleY(0f).scaleX(0f).start()
             }
         }
 
         if (currentScrollPercentage < PERCENTAGE_TO_SHOW_IMAGE) {
             if (mIsImageHidden) {
                 mIsImageHidden = false
-                ViewCompat.animate(tvAge!!).scaleY(1f).scaleX(1f).start()
+                ViewCompat.animate(binding.tvMinimumAge).scaleY(1f).scaleX(1f).start()
             }
         }
     }
