@@ -1,31 +1,21 @@
-package ru.fundamentals.studyapp.ui
+package ru.fundamentals.studyapp.screens.movie_details
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.R
-import ru.fundamentals.studyapp.data.Actor
-import ru.fundamentals.studyapp.data.MovieElement
+import ru.fundamentals.studyapp.data.models.Actor
+import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesDetailsBinding
-import ru.fundamentals.studyapp.ui.adapters.ActorsAdapter
+import ru.fundamentals.studyapp.screens.MainActivity
 import ru.fundamentals.studyapp.util.loadImage
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.abs
@@ -67,14 +57,16 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         binding.toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
         binding.appBar.addOnOffsetChangedListener(this)
         arguments?.apply {
-            val movie = getParcelable<MovieElement.Movie>(MOVIE)
-            binding.tvMinimumAge.text = getString(R.string.minimum_age, movie?.minimumAge)
-            binding.collapsingToolbar.title = movie?.title
-            binding.tvGenre.text = movie?.genres?.joinToString { it.name }
+            val movieId = getLong(MOVIE)
+            val movie =
+                (activity as MainActivity).viewModel.getMovie(movieId) as MovieElement.Movie
+            binding.tvMinimumAge.text = getString(R.string.minimum_age, movie.minimumAge)
+            binding.collapsingToolbar.title = movie.title
+            binding.tvGenre.text = movie.genres.joinToString { it.name }
             binding.tvNumberOfRatings.text =
-                getString(R.string.number_of_ratings, movie?.numberOfRatings)
-            binding.tvStoryOverview.text = movie?.overview
-            loadImage(binding.ivBackdrop, movie?.backdrop!!)
+                getString(R.string.number_of_ratings, movie.numberOfRatings)
+            binding.tvStoryOverview.text = movie.overview
+            loadImage(binding.ivBackdrop, movie.backdrop)
             setRating(
                 view,
                 movie.ratings.roundToInt(),
@@ -88,7 +80,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         binding.rvActorsList.setHasFixedSize(true)
         binding.rvActorsList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = ActorsAdapter(requireContext())
+        val adapter = ActorsAdapter()
         adapter.submitList(actors)
         binding.rvActorsList.adapter = adapter
     }
@@ -134,9 +126,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         private const val MOVIE = "movie"
 
         @JvmStatic
-        fun newInstance(movie: MovieElement.Movie) = FragmentMoviesDetails().apply {
+        fun newInstance(movieId: Long) = FragmentMoviesDetails().apply {
             arguments = Bundle().apply {
-                putParcelable(MOVIE, movie)
+                putLong(MOVIE, movieId)
             }
         }
     }

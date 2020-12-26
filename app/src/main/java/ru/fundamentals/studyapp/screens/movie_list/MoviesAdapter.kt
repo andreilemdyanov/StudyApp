@@ -1,6 +1,5 @@
-package ru.fundamentals.studyapp.ui.adapters
+package ru.fundamentals.studyapp.screens.movie_list
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
-import ru.fundamentals.studyapp.data.MovieElement
-import ru.fundamentals.studyapp.ui.MoviesCallback
+import ru.fundamentals.studyapp.data.models.MovieElement
+import ru.fundamentals.studyapp.util.APP_ACTIVITY
 import ru.fundamentals.studyapp.util.loadImageRoundCorners
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
-    context: Context,
     private val clickListener: OnRecyclerMovieClicked
 ) : ListAdapter<MovieElement, ViewHolder>(MoviesCallback()) {
 
-    private var inflater = LayoutInflater.from(context)
+    private var inflater = LayoutInflater.from(APP_ACTIVITY)
 
     fun isHeader(position: Int) = position == 0
 

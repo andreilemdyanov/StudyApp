@@ -7,16 +7,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import ru.fundamentals.studyapp.data.models.Actor
+import ru.fundamentals.studyapp.data.models.Genre
+import ru.fundamentals.studyapp.data.models.MovieElement
 
 
 private val jsonFormat = Json { ignoreUnknownKeys = true }
 
 @Serializable
-private class JsonGenre(val id: Int, val name: String)
+private class JsonGenre(val id: Long, val name: String)
 
 @Serializable
 private class JsonActor(
-    val id: Int,
+    val id: Long,
     val name: String,
     @SerialName("profile_path")
     val profilePicture: String
@@ -24,7 +27,7 @@ private class JsonActor(
 
 @Serializable
 private class JsonMovie(
-    val id: Int,
+    val id: Long,
     val title: String,
     @SerialName("poster_path")
     val posterPicture: String,
@@ -32,8 +35,8 @@ private class JsonMovie(
     val backdropPicture: String,
     val runtime: Int,
     @SerialName("genre_ids")
-    val genreIds: List<Int>,
-    val actors: List<Int>,
+    val genreIds: List<Long>,
+    val actors: List<Long>,
     @SerialName("vote_average")
     val ratings: Float,
     @SerialName("vote_count")
