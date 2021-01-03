@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.util.APP_ACTIVITY
-import ru.fundamentals.studyapp.util.loadImageRoundCorners
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.roundToInt
 
@@ -82,7 +83,12 @@ sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val runtime = itemView.findViewById<TextView>(R.id.tv_runtime)
 
         fun bind(movie: MovieElement.Movie) {
-            loadImageRoundCorners(preview, movie.poster, R.drawable.ic_placeholder_movies_24)
+            preview.load(movie.poster) {
+                error(R.drawable.ic_placeholder_movies_24)
+                fallback(R.drawable.ic_placeholder_movies_24)
+                transformations(RoundedCornersTransformation(10f))
+                crossfade(true)
+            }
             minimumAge.text = context.getString(R.string.minimum_age, movie.minimumAge)
             genres.text = movie.genres.joinToString { it.name }
             numberOfRatings.text =

@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import coil.load
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import ru.fundamentals.studyapp.R
@@ -16,7 +17,6 @@ import ru.fundamentals.studyapp.data.models.Actor
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesDetailsBinding
 import ru.fundamentals.studyapp.screens.MainActivity
-import ru.fundamentals.studyapp.util.loadImage
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -66,7 +66,11 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
             binding.tvNumberOfRatings.text =
                 getString(R.string.number_of_ratings, movie.numberOfRatings)
             binding.tvStoryOverview.text = movie.overview
-            loadImage(binding.ivBackdrop, movie.backdrop)
+            binding.ivBackdrop.load(movie.backdrop) {
+                crossfade(true)
+                error(R.color.dark_blue)
+                fallback(R.color.dark_blue)
+            }
             setRating(
                 view,
                 movie.ratings.roundToInt(),

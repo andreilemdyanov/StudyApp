@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.Actor
 import ru.fundamentals.studyapp.util.APP_ACTIVITY
-import ru.fundamentals.studyapp.util.loadImageRoundCorners
 
 class ActorsAdapter : ListAdapter<Actor, ActorHolder>(ActorsCallback()) {
 
@@ -30,6 +31,11 @@ class ActorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(actor: Actor) {
         name.text = actor.name
-        loadImageRoundCorners(image, actor.picture, R.drawable.ic_placeholder_actor_24)
+        image.load(actor.picture){
+            error(R.drawable.ic_placeholder_movies_24)
+            fallback(R.drawable.ic_placeholder_movies_24)
+            transformations(RoundedCornersTransformation(10f))
+            crossfade(true)
+        }
     }
 }
