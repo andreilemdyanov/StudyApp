@@ -14,7 +14,7 @@ import ru.fundamentals.studyapp.databinding.FragmentMoviesListBinding
 import ru.fundamentals.studyapp.screens.MainActivity
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list),
-    Observer<Map<Long, MovieElement>> {
+    Observer<Map<Int, MovieElement>> {
 
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
@@ -48,7 +48,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list),
             }
         }
         binding.rvMoviesList.layoutManager = manager
-        binding.rvMoviesList.setHasFixedSize(true)
+//        binding.rvMoviesList.setHasFixedSize(true)
     }
 
     override fun onStart() {
@@ -59,7 +59,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list),
         )
     }
 
-    override fun onChanged(t: Map<Long, MovieElement>?) {
+    override fun onChanged(t: Map<Int, MovieElement>?) {
         adapter.submitList((activity as MainActivity).viewModel.moviesList.value?.values?.toList())
     }
 
@@ -73,7 +73,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list),
         _binding = null
     }
 
-    private fun doOnClick(movieId: Long) {
+    private fun doOnClick(movieId: Int) {
         binding.rvMoviesList.let {
             clickListener?.onMoviesDetailsClick(movieId)
         }
@@ -92,7 +92,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list),
     }
 
     interface ClickListener {
-        fun onMoviesDetailsClick(movieId: Long)
+        fun onMoviesDetailsClick(movieId: Int)
     }
 }
 

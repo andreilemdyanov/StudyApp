@@ -160,6 +160,19 @@
                 tools:text="@string/counter_reviews" />
 
             <TextView
+                android:id="@+id/tv_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:fontFamily="@font/roboto_black"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_number_of_ratings"
+                tools:text="@string/duration" />
+
+            <TextView
                 android:id="@+id/tv_story_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -170,7 +183,7 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/normal_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_star_1" />
+                app:layout_constraintTop_toBottomOf="@id/tv_runtime" />
 
             <TextView
                 android:id="@+id/tv_story_overview"

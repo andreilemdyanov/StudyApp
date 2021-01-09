@@ -57,7 +57,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         binding.toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
         binding.appBar.addOnOffsetChangedListener(this)
         arguments?.apply {
-            val movieId = getLong(MOVIE)
+            val movieId = getInt(MOVIE)
             val movie =
                 (activity as MainActivity).viewModel.getMovie(movieId) as MovieElement.Movie
             binding.tvMinimumAge.text = getString(R.string.minimum_age, movie.minimumAge)
@@ -77,8 +77,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 R.drawable.ic_star_icon_pink_12,
                 R.drawable.ic_star_icon_gray_12
             )
-            actors = movie.actors
-            binding.tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
+            binding.tvRuntime.text = context?.getString(R.string.runtime, movie.runtime)
+//            actors = movie.actors
+//            binding.tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
         }
 
         binding.rvActorsList.setHasFixedSize(true)
@@ -130,9 +131,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         private const val MOVIE = "movie"
 
         @JvmStatic
-        fun newInstance(movieId: Long) = FragmentMoviesDetails().apply {
+        fun newInstance(movieId: Int) = FragmentMoviesDetails().apply {
             arguments = Bundle().apply {
-                putLong(MOVIE, movieId)
+                putInt(MOVIE, movieId)
             }
         }
     }

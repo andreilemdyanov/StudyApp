@@ -11,12 +11,11 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.Actor
-import ru.fundamentals.studyapp.util.APP_ACTIVITY
 
-class ActorsAdapter : ListAdapter<Actor, ActorHolder>(ActorsCallback()) {
+class ActorsAdapter : ListAdapter<Actor, ActorHolder>(ActorsDiffCallback()) {
 
-    private var inflater = LayoutInflater.from(APP_ACTIVITY)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return ActorHolder(inflater.inflate(R.layout.view_holder_actor, parent, false))
     }
 

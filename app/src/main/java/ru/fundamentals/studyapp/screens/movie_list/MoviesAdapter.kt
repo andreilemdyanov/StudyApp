@@ -11,19 +11,17 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.MovieElement
-import ru.fundamentals.studyapp.util.APP_ACTIVITY
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
     private val clickListener: OnRecyclerMovieClicked
-) : ListAdapter<MovieElement, ViewHolder>(MoviesCallback()) {
-
-    private var inflater = LayoutInflater.from(APP_ACTIVITY)
+) : ListAdapter<MovieElement, ViewHolder>(MoviesDiffCallback()) {
 
     fun isHeader(position: Int) = position == 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             Type.HEADER.ordinal -> ViewHolder.Header(
                 inflater.inflate(
@@ -80,13 +78,14 @@ sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val genres = itemView.findViewById<TextView>(R.id.tv_genre)
         private val numberOfRatings = itemView.findViewById<TextView>(R.id.tv_number_of_ratings)
         private val title = itemView.findViewById<TextView>(R.id.tv_title_name)
-        private val runtime = itemView.findViewById<TextView>(R.id.tv_runtime)
+//        private val runtime = itemView.findViewById<TextView>(R.id.tv_runtime)
 
         fun bind(movie: MovieElement.Movie) {
+
             preview.load(movie.poster) {
                 error(R.drawable.ic_placeholder_movies_24)
                 fallback(R.drawable.ic_placeholder_movies_24)
-                transformations(RoundedCornersTransformation(10f))
+                transformations(RoundedCornersTransformation(8f))
                 crossfade(true)
             }
             minimumAge.text = context.getString(R.string.minimum_age, movie.minimumAge)
@@ -94,7 +93,7 @@ sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             numberOfRatings.text =
                 context.getString(R.string.number_of_ratings, movie.numberOfRatings)
             title.text = movie.title
-            runtime.text = context.getString(R.string.runtime, movie.runtime)
+//            runtime.text = context.getString(R.string.runtime, movie.runtime)
             setRating(
                 itemView,
                 movie.ratings.roundToInt(),
