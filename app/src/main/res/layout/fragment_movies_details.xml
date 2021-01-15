@@ -78,11 +78,10 @@
         android:background="@color/dark_blue"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/motionLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutDescription="@xml/fragment_movies_details_xml_constraintlayout_scene">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_genre"
@@ -104,6 +103,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_2"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -113,6 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintStart_toEndOf="@id/iv_star_1"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_3"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -123,6 +125,7 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 app:layout_constraintStart_toEndOf="@id/iv_star_2"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_4"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -133,6 +136,7 @@
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
                 app:layout_constraintStart_toEndOf="@id/iv_star_3"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_5"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -231,6 +235,6 @@
                 tools:orientation="horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

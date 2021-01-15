@@ -4,10 +4,10 @@ package ru.fundamentals.studyapp.screens
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.data.api.retrofit.RetrofitModule
+import ru.fundamentals.studyapp.data.api.retrofit.models.ConfigResponse
 import ru.fundamentals.studyapp.data.models.Genre
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.util.API_KEY
@@ -16,9 +16,12 @@ class MoviesViewModel : ViewModel() {
     private val _mutableMoviesList = MutableLiveData<Map<Int, MovieElement>>()
     val moviesList: LiveData<Map<Int, MovieElement>> get() = _mutableMoviesList
 
+    private val _mutableConfig = MutableLiveData<ConfigResponse>()
+    val config: LiveData<ConfigResponse> get() = _mutableConfig
+
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            val config = RetrofitModule.configApi.getConfig(API_KEY)
+        viewModelScope.launch {
+            _mutableConfig.postValue(RetrofitModule.configApi.getConfig(API_KEY))
             val genres =
                 RetrofitModule.genresApi.getGenresResponse(API_KEY).genres.map { genreItem ->
                     Genre(
@@ -32,8 +35,8 @@ class MoviesViewModel : ViewModel() {
                         movieItem.id,
                         movieItem.title,
                         movieItem.overview,
-                        config.images.secureBaseUrl + config.images.posterSizes[2] + movieItem.posterPath,
-                        config.images.secureBaseUrl + config.images.backdropSizes[2] + movieItem.backdropPath,
+                        _mutableConfig.value!!.images.secureBaseUrl + _mutableConfig.value!!.images.posterSizes[2] + movieItem.posterPath,
+                        _mutableConfig.value!!.images.secureBaseUrl + _mutableConfig.value!!.images.backdropSizes[2] + movieItem.backdropPath,
                         movieItem.voteAverage / 2.0,
                         movieItem.voteCount,
                         if (movieItem.adult) 16 else 13,

@@ -2,6 +2,7 @@ package ru.fundamentals.studyapp.data.api.retrofit.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class MovieItem(
@@ -22,5 +23,7 @@ data class MovieItem(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("vote_count")
-    val voteCount: Int
+    val voteCount: Int,
+    @Transient
+    val runTime: Int = 0
 )

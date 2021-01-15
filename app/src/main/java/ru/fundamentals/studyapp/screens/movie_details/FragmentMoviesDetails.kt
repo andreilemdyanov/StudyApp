@@ -2,13 +2,14 @@ package ru.fundamentals.studyapp.screens.movie_details
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
@@ -16,7 +17,8 @@ import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.Actor
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesDetailsBinding
-import ru.fundamentals.studyapp.screens.MainActivity
+import ru.fundamentals.studyapp.screens.MovieDetailsViewModel
+import ru.fundamentals.studyapp.screens.MoviesViewModel
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -24,16 +26,53 @@ import kotlin.math.roundToInt
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
     OnOffsetChangedListener {
 
-    private var _binding: FragmentMoviesDetailsBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentMoviesDetailsBinding::bind)
     private var clickListener: ClickListener? = null
     private var mIsImageHidden = false
     private var mMaxScrollSize = 0
+    private val viewModelMovies: MoviesViewModel by activityViewModels()
+    private val viewModel: MovieDetailsViewModel by viewModels()
+    lateinit var movie: MovieElement.Movie
+    private var actors = mutableListOf<Actor>()
+    private val adapter = ActorsAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is ClickListener)
             clickListener = context
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.runTime.observe(viewLifecycleOwner, {
+            movie.runtime = it.runTime
+            with(binding) {
+                if (movie.runtime == 0) tvRuntime.visibility =
+                    View.GONE else View.VISIBLE
+
+                tvRuntime.text = context?.getString(R.string.runtime, movie.runtime)
+            }
+        })
+
+        viewModel.crewList.observe(viewLifecycleOwner, {
+            val config = viewModelMovies.config.value!!
+            it.filter { castItem ->
+                castItem.profilePath != "default"
+            }.map { castItem ->
+                actors.add(
+                    Actor(
+                        castItem.id,
+                        castItem.name,
+                        config.images.secureBaseUrl + config.images.profileSizes[1] + castItem.profilePath
+                    )
+                )
+            }
+            adapter.submitList(actors)
+            with(binding) {
+                rvActorsList.adapter = adapter
+                tvCast.visibility = if (adapter.itemCount > 0) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,34 +81,29 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var actors: List<Actor> = emptyList()
-        binding.toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
-        binding.appBar.addOnOffsetChangedListener(this)
         arguments?.apply {
             val movieId = getInt(MOVIE)
-            val movie =
-                (activity as MainActivity).viewModel.getMovie(movieId) as MovieElement.Movie
-            binding.tvMinimumAge.text = getString(R.string.minimum_age, movie.minimumAge)
-            binding.collapsingToolbar.title = movie.title
-            binding.tvGenre.text = movie.genres.joinToString { it.name }
-            binding.tvNumberOfRatings.text =
-                getString(R.string.number_of_ratings, movie.numberOfRatings)
-            binding.tvStoryOverview.text = movie.overview
-            binding.ivBackdrop.load(movie.backdrop) {
-                crossfade(true)
-                error(R.color.dark_blue)
-                fallback(R.color.dark_blue)
+            viewModel.getMovieRuntime(movieId)
+            viewModel.getMovieCrew(movieId)
+            movie = viewModelMovies.getMovie(movieId) as MovieElement.Movie
+            with(binding) {
+                toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
+                appBar.addOnOffsetChangedListener(this@FragmentMoviesDetails)
+                tvMinimumAge.text = getString(R.string.minimum_age, movie.minimumAge)
+                collapsingToolbar.title = movie.title
+                tvGenre.text = movie.genres.joinToString { it.name }
+                tvNumberOfRatings.text =
+                    getString(R.string.number_of_ratings, movie.numberOfRatings)
+                tvStoryOverview.text = movie.overview
+                ivBackdrop.load(movie.backdrop) {
+                    crossfade(true)
+                    error(R.color.dark_blue)
+                    fallback(R.color.dark_blue)
+                }
+                rvActorsList.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
             setRating(
                 view,
@@ -77,27 +111,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 R.drawable.ic_star_icon_pink_12,
                 R.drawable.ic_star_icon_gray_12
             )
-            binding.tvRuntime.text = context?.getString(R.string.runtime, movie.runtime)
-//            actors = movie.actors
-//            binding.tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
         }
-
-        binding.rvActorsList.setHasFixedSize(true)
-        binding.rvActorsList.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val adapter = ActorsAdapter()
-        adapter.submitList(actors)
-        binding.rvActorsList.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.motionLayout.transitionToEnd()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onDetach() {

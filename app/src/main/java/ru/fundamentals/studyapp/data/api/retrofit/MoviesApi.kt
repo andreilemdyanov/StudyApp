@@ -3,8 +3,7 @@ package ru.fundamentals.studyapp.data.api.retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import ru.fundamentals.studyapp.data.api.retrofit.models.MovieItem
-import ru.fundamentals.studyapp.data.api.retrofit.models.MoviesPopularResponse
+import ru.fundamentals.studyapp.data.api.retrofit.models.*
 
 interface MoviesApi {
     @GET("movie/popular")
@@ -14,11 +13,11 @@ interface MoviesApi {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): MovieItem
+    ): RunTime
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieCrew(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    )
+    ): CastResponse
 }

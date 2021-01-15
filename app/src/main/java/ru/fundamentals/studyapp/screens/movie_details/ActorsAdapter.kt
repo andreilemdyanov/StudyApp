@@ -30,9 +30,9 @@ class ActorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(actor: Actor) {
         name.text = actor.name
-        image.load(actor.picture){
-            error(R.drawable.ic_placeholder_movies_24)
-            fallback(R.drawable.ic_placeholder_movies_24)
+        image.load(actor.picture) {
+            error(R.drawable.ic_baseline_person_24)
+            fallback(R.drawable.ic_baseline_person_24)
             transformations(RoundedCornersTransformation(10f))
             crossfade(true)
         }

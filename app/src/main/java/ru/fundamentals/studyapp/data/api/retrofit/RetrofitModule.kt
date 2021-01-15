@@ -11,6 +11,7 @@ import retrofit2.create
 object RetrofitModule {
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
     }
     private val client = OkHttpClient().newBuilder()
         .addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

@@ -2,7 +2,6 @@ package ru.fundamentals.studyapp.screens
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.screens.movie_details.FragmentMoviesDetails
 import ru.fundamentals.studyapp.screens.movie_list.FragmentMoviesList
@@ -10,14 +9,9 @@ import ru.fundamentals.studyapp.screens.movie_list.FragmentMoviesList
 class MainActivity : AppCompatActivity(), FragmentMoviesList.ClickListener,
     FragmentMoviesDetails.ClickListener {
 
-    lateinit var viewModel: MoviesViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
-        viewModel = ViewModelProvider(
-            this, ViewModelFactory()
-        ).get(MoviesViewModel::class.java)
         if (savedInstanceState == null)
             supportFragmentManager.beginTransaction()
                 .add(
