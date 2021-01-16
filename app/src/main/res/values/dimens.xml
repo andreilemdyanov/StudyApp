@@ -19,4 +19,8 @@
     <dimen name="height_image_card">248dp</dimen>
     <!--    Actor size    -->
     <dimen name="actor_image_size">84dp</dimen>
+
+    <dimen name="gridItemsDist">6dp</dimen>
+    <dimen name="linearItemsDist">4dp</dimen>
+
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="NameActor">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -24,5 +25,11 @@
 
     <style name="TitleText">
         <item name="android:textSize">@dimen/large_text</item>
+    </style>
+
+    <style name="MovieImage">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:scaleType">fitXY</item>
     </style>
 </resources>

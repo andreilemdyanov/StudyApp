@@ -2,10 +2,6 @@ package ru.fundamentals.studyapp.util
 
 import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.fundamentals.studyapp.R
 
 fun setRating(view: View, numStars: Int, iconSelect: Int, iconUnselect: Int) {
@@ -58,24 +54,4 @@ fun setRating(view: View, numStars: Int, iconSelect: Int, iconUnselect: Int) {
             iv5.setImageResource(iconSelect)
         }
     }
-}
-
-fun loadImage(view: ImageView, picture: String) {
-    Glide.with(view.context)
-        .load(picture)
-        .error(R.color.dark_blue)
-        .fallback(R.color.dark_blue)
-        .centerCrop()
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .into(view)
-}
-
-fun loadImageRoundCorners(view: ImageView, picture: String, placeHolder: Int) {
-    Glide.with(view.context)
-        .load(picture)
-        .error(placeHolder)
-        .fallback(placeHolder)
-        .transform(CenterCrop(), RoundedCorners(14))
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .into(view)
 }
