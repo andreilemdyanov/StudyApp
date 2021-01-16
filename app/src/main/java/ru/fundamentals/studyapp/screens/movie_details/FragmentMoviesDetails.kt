@@ -2,6 +2,7 @@ package ru.fundamentals.studyapp.screens.movie_details
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -46,6 +47,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         super.onStart()
         viewModel.runTime.observe(viewLifecycleOwner, {
             movie.runtime = it.runTime
+            Log.d("M_FragmentMoviesDetails", "movie.runtime = ${movie.runtime}")
             with(binding) {
                 if (movie.runtime == 0) tvRuntime.visibility =
                     View.GONE else View.VISIBLE
@@ -56,6 +58,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
 
         viewModel.crewList.observe(viewLifecycleOwner, {
             val config = viewModelMovies.config.value!!
+            actors.clear()
             it.filter { castItem ->
                 castItem.profilePath != "default"
             }.map { castItem ->
@@ -104,6 +107,11 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 }
                 rvActorsList.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                rvActorsList.addItemDecoration(
+                    LinearSpacingItemDecoration(
+                        resources.getDimension(R.dimen.linearItemsDist).toInt()
+                    )
+                )
             }
             setRating(
                 view,

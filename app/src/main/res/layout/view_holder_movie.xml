@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_movie_card"
-    android:layout_width="@dimen/width_card"
-    android:layout_height="@dimen/height_card"
-    android:layout_margin="6dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:cardBackgroundColor="?attr/colorPrimary"
     app:cardCornerRadius="6dp"
     app:strokeColor="@color/stroke_fill"
@@ -16,23 +15,28 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
+            style="@style/MovieImage"
             android:src="@drawable/back_alpha_card"
+            app:layout_constraintDimensionRatio="H,2:3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_movie_preview"
-            style="@style/ImageCard"
+            style="@style/MovieImage"
+            android:layout_margin="@dimen/extra_small_margin"
+            app:layout_constraintDimensionRatio="H,2:3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/avengers" />
 
         <ImageView
-            style="@style/ImageCard"
+            style="@style/MovieImage"
             android:src="@drawable/mask_movie_preview"
+            app:layout_constraintDimensionRatio="H,2:3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +54,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/age_rate" />
-
 
         <ru.fundamentals.studyapp.custom.CheckableImageView
             android:id="@+id/iv_like"
@@ -140,14 +143,14 @@
             android:id="@+id/tv_title_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_margin="@dimen/normal_margin"
             android:fontFamily="@font/roboto_black"
             android:gravity="start"
+            android:lines="2"
             android:maxLines="2"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/normal_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_movie_preview"

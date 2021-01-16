@@ -2,6 +2,7 @@ package ru.fundamentals.studyapp.screens.movie_list
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,14 +31,20 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         adapter = MoviesAdapter(clickListenerItem)
         with(binding) {
             rvMoviesList.adapter = adapter
-            rvMoviesList.adapter = adapter
             val manager =
                 GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
             manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
+                    Log.d("M_FragmentMoviesList", "spanCount = ${manager.spanCount}")
                     return if (adapter.isHeader(position)) manager.spanCount else 1
                 }
             }
+
+            rvMoviesList.addItemDecoration(
+                GridSpacingItemDecoration(
+                    resources.getDimension(R.dimen.gridItemsDist).toInt()
+                )
+            )
             rvMoviesList.layoutManager = manager
         }
     }
