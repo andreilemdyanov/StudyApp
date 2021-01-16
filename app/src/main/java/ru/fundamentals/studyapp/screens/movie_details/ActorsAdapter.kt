@@ -1,6 +1,5 @@
-package ru.fundamentals.studyapp.ui.adapters
+package ru.fundamentals.studyapp.screens.movie_details
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.fundamentals.studyapp.R
-import ru.fundamentals.studyapp.data.Actor
-import ru.fundamentals.studyapp.ui.ActorsCallback
+import ru.fundamentals.studyapp.data.models.Actor
+import ru.fundamentals.studyapp.util.APP_ACTIVITY
 import ru.fundamentals.studyapp.util.loadImageRoundCorners
 
-class ActorsAdapter(
-    context: Context,
-) : ListAdapter<Actor, ActorHolder>(ActorsCallback()) {
+class ActorsAdapter : ListAdapter<Actor, ActorHolder>(ActorsCallback()) {
 
-    private var inflater = LayoutInflater.from(context)
+    private var inflater = LayoutInflater.from(APP_ACTIVITY)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorHolder {
         return ActorHolder(inflater.inflate(R.layout.view_holder_actor, parent, false))
     }

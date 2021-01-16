@@ -1,7 +1,7 @@
-package ru.fundamentals.studyapp.ui
+package ru.fundamentals.studyapp.screens.movie_list
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.fundamentals.studyapp.data.MovieElement
+import ru.fundamentals.studyapp.data.models.MovieElement
 
 class MoviesCallback : DiffUtil.ItemCallback<MovieElement>() {
 
