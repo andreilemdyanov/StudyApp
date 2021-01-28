@@ -1,6 +1,7 @@
 package ru.fundamentals.studyapp.presentation.movie_details.view
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,7 +46,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
 
     override fun onStart() {
         super.onStart()
-        viewModel.runTime.observe(viewLifecycleOwner, {
+        viewModel.runTimeDto.observe(viewLifecycleOwner, {
             movie.runtime = it.runTime
             Log.d("M_FragmentMoviesDetails", "movie.runtime = ${movie.runtime}")
             with(binding) {
@@ -66,7 +67,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                     Actor(
                         castItem.id,
                         castItem.name,
-                        config.images.secureBaseUrl + config.images.profileSizes[1] + castItem.profilePath
+                        config.imagesDto.secureBaseUrl + config.imagesDto.profileSizes[1] + castItem.profilePath
                     )
                 )
             }
@@ -96,6 +97,8 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 appBar.addOnOffsetChangedListener(this@FragmentMoviesDetails)
                 tvMinimumAge.text = getString(R.string.minimum_age, movie.minimumAge)
                 collapsingToolbar.title = movie.title
+                collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE)
+                collapsingToolbar.setExpandedTitleColor(Color.WHITE)
                 tvGenre.text = movie.genres.joinToString { it.name }
                 tvNumberOfRatings.text =
                     getString(R.string.number_of_ratings, movie.numberOfRatings)

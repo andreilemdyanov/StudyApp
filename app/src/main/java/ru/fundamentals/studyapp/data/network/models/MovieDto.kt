@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-data class MovieItem(
+data class MovieDto(
     @SerialName("overview")
     val overview: String,
     @SerialName("title")

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Images(
+data class ImagesDto(
     @SerialName("base_url")
     val baseUrl: String,
     @SerialName("secure_base_url")

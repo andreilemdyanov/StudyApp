@@ -13,7 +13,7 @@ interface MoviesApi {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): RunTime
+    ): RunTimeDto
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieCrew(

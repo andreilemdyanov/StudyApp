@@ -1,59 +1,67 @@
 package ru.fundamentals.studyapp.presentation.movie_list.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ru.fundamentals.studyapp.App
+import ru.fundamentals.studyapp.data.mappers.*
 import ru.fundamentals.studyapp.data.network.api.RetrofitModule
 import ru.fundamentals.studyapp.data.network.models.ConfigResponse
-import ru.fundamentals.studyapp.data.models.Genre
 import ru.fundamentals.studyapp.data.models.MovieElement
+import ru.fundamentals.studyapp.data.room.AppDatabase
 import ru.fundamentals.studyapp.util.API_KEY
 
 class MoviesViewModel : ViewModel() {
-    private val _mutableMoviesList = MutableLiveData<Map<Int, MovieElement>>()
-    val moviesList: LiveData<Map<Int, MovieElement>> get() = _mutableMoviesList
+    private val _mutableMoviesList = MutableLiveData<List<MovieElement>>()
+    val moviesList: LiveData<List<MovieElement>> get() = _mutableMoviesList
 
     private val _mutableConfig = MutableLiveData<ConfigResponse>()
     val config: LiveData<ConfigResponse> get() = _mutableConfig
+    val db: AppDatabase = App.instance?.appDatabase!!
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
+            Log.d("M_MoviesViewModel", "$exception")
+        }) {
+
+//            val configPersist = db.configDao().getConfig()
+            val genresPersist = db.genreDao().getAll()
+            val moviesPersist = db.movieDao().getAll()
+
+            val dbMovieRes = mutableListOf<MovieElement>().apply {
+                add(0, MovieElement.Header(-1, "Header", "Some image"))
+                addAll(MoviesMapperDbToUi.transformList(moviesPersist, genresPersist))
+            }
+
+            _mutableMoviesList.postValue(dbMovieRes)
+
             _mutableConfig.postValue(RetrofitModule.configApi.getConfig(API_KEY))
             val genres =
-                RetrofitModule.genresApi.getGenresResponse(API_KEY).genres.map { genreItem ->
-                    Genre(
-                        genreItem.id,
-                        genreItem.name
-                    )
-                }.associateBy { it.id }
+                GenresMapperApiToUi.transformList(RetrofitModule.genresApi.getGenresResponse(API_KEY).genres)
+                    .also {
+                        db.genreDao().insertAll(GenresMapperUiToDb.transformList(it))
+                    }
             val movies =
-                RetrofitModule.moviesApi.getMoviesResponse(API_KEY).results.map { movieItem ->
-                    MovieElement.Movie(
-                        movieItem.id,
-                        movieItem.title,
-                        movieItem.overview,
-                        _mutableConfig.value!!.images.secureBaseUrl + _mutableConfig.value!!.images.posterSizes[2] + movieItem.posterPath,
-                        _mutableConfig.value!!.images.secureBaseUrl + _mutableConfig.value!!.images.backdropSizes[2] + movieItem.backdropPath,
-                        movieItem.voteAverage / 2.0,
-                        movieItem.voteCount,
-                        if (movieItem.adult) 16 else 13,
-                        100,
-                        false,
-                        movieItem.genreIds.map {
-                            genres[it] ?: throw IllegalArgumentException("Genre not found")
-                        }
-                    )
+                MoviesMapperApiToUi.transformList(
+                    RetrofitModule.moviesApi.getMoviesResponse(API_KEY).results,
+                    _mutableConfig.value!!,
+                    genres
+                ).also {
+                    db.movieDao().insertAll(MoviesMapperUiToDb.transformList(it))
                 }
+
             val moviesResult = mutableListOf<MovieElement>().apply {
                 add(0, MovieElement.Header(-1, "Header", "Some image"))
                 addAll(movies)
             }
-            _mutableMoviesList.postValue(moviesResult.associateBy { it.id })
+            _mutableMoviesList.postValue(moviesResult)
         }
     }
 
-    fun getMovie(movieId: Int) = _mutableMoviesList.value?.get(movieId)
+    fun getMovie(movieId: Int) = _mutableMoviesList.value?.find { it.id == movieId }
 }

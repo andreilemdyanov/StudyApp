@@ -53,7 +53,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         super.onStart()
         viewModel.moviesList.observe(
             this.viewLifecycleOwner, {
-                adapter.submitList(viewModel.moviesList.value?.values?.toList())
+                adapter.submitList(viewModel.moviesList.value?.sortedBy { it.id })
             }
         )
     }

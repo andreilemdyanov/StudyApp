@@ -10,7 +10,7 @@ data class MoviesPopularResponse(
     @SerialName("total_pages")
     val totalPages: Int,
     @SerialName("results")
-    val results: List<MovieItem>,
+    val results: List<MovieDto>,
     @SerialName("total_results")
     val totalResults: Int
 )

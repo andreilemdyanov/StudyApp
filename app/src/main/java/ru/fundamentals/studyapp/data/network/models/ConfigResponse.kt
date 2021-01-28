@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ConfigResponse(
     @SerialName("images")
-    val images: Images,
+    val imagesDto: ImagesDto,
     @SerialName("change_keys")
     val changeKeys: List<String>
 )
