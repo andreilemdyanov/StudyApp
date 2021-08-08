@@ -1,7 +1,7 @@
 package ru.fundamentals.studyapp.data.mappers
 
 import ru.fundamentals.studyapp.data.models.Genre
-import ru.fundamentals.studyapp.data.room.GenreDb
+import ru.fundamentals.studyapp.data.room.models.GenreDb
 
 object GenresMapperUiToDb {
     fun transformList(genres: List<Genre>): List<GenreDb> {

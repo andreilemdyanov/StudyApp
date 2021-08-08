@@ -21,7 +21,10 @@ class MovieDetailsViewModel : ViewModel() {
     val crewList: LiveData<List<CastDto>> get() = _mutableCrewList
 
     fun getMovieRuntime(movieId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
+            Log.d("M_MovieDetailsViewModel", "$exception")
+
+        }) {
             _mutableRunTime.postValue(RetrofitModule.moviesApi.getMovieDetails(movieId, API_KEY))
         }
     }

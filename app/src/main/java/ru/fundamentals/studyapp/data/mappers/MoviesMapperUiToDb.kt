@@ -1,7 +1,7 @@
 package ru.fundamentals.studyapp.data.mappers
 
 import ru.fundamentals.studyapp.data.models.MovieElement
-import ru.fundamentals.studyapp.data.room.MovieDb
+import ru.fundamentals.studyapp.data.room.models.MovieDb
 
 object MoviesMapperUiToDb {
 

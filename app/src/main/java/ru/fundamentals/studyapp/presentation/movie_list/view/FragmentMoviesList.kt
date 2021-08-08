@@ -4,11 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.fundamentals.studyapp.R
+import ru.fundamentals.studyapp.data.ValidResult
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesListBinding
 import ru.fundamentals.studyapp.presentation.movie_list.viewmodel.MoviesViewModel
@@ -52,10 +54,16 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onStart() {
         super.onStart()
         viewModel.moviesList.observe(
-            this.viewLifecycleOwner, {
-                adapter.submitList(viewModel.moviesList.value?.sortedBy { it.id })
-            }
-        )
+            this.viewLifecycleOwner
+        ) {
+            val result = (viewModel.moviesList.value as ValidResult).result
+            adapter.submitList(result.sortedBy { it.id })
+        }
+        viewModel.error.observe(
+            this.viewLifecycleOwner
+        ) {
+            Toast.makeText(requireContext(), it.e.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDetach() {

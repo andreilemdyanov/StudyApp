@@ -46,7 +46,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
 
     override fun onStart() {
         super.onStart()
-        viewModel.runTimeDto.observe(viewLifecycleOwner, {
+        viewModel.runTimeDto.observe(viewLifecycleOwner) {
             movie.runtime = it.runTime
             Log.d("M_FragmentMoviesDetails", "movie.runtime = ${movie.runtime}")
             with(binding) {
@@ -55,9 +55,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
 
                 tvRuntime.text = context?.getString(R.string.runtime, movie.runtime)
             }
-        })
+        }
 
-        viewModel.crewList.observe(viewLifecycleOwner, {
+        viewModel.crewList.observe(viewLifecycleOwner) {
             val config = viewModelMovies.config.value!!
             actors.clear()
             it.filter { castItem ->
@@ -67,7 +67,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                     Actor(
                         castItem.id,
                         castItem.name,
-                        config.imagesDto.secureBaseUrl + config.imagesDto.profileSizes[1] + castItem.profilePath
+                        config.secureBaseUrl + config.profileSize + castItem.profilePath
                     )
                 )
             }
@@ -76,7 +76,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 rvActorsList.adapter = adapter
                 tvCast.visibility = if (adapter.itemCount > 0) View.VISIBLE else View.GONE
             }
-        })
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

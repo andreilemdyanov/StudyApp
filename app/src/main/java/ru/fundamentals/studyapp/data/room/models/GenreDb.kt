@@ -1,9 +1,7 @@
-package ru.fundamentals.studyapp.data.room
+package ru.fundamentals.studyapp.data.room.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.ForeignKey.NO_ACTION
 import androidx.room.PrimaryKey
 
 @Entity(

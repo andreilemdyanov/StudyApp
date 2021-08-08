@@ -7,61 +7,71 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.App
-import ru.fundamentals.studyapp.data.mappers.*
+import ru.fundamentals.studyapp.data.ErrorResult
+import ru.fundamentals.studyapp.data.MoviesRepository
+import ru.fundamentals.studyapp.data.ValidResult
+import ru.fundamentals.studyapp.data.models.Config
 import ru.fundamentals.studyapp.data.network.api.RetrofitModule
-import ru.fundamentals.studyapp.data.network.models.ConfigResponse
-import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.data.room.AppDatabase
-import ru.fundamentals.studyapp.util.API_KEY
 
 class MoviesViewModel : ViewModel() {
-    private val _mutableMoviesList = MutableLiveData<List<MovieElement>>()
-    val moviesList: LiveData<List<MovieElement>> get() = _mutableMoviesList
+    private val _mutableMoviesList = MutableLiveData<ValidResult>()
+    val moviesList: LiveData<ValidResult> get() = _mutableMoviesList
 
-    private val _mutableConfig = MutableLiveData<ConfigResponse>()
-    val config: LiveData<ConfigResponse> get() = _mutableConfig
-    val db: AppDatabase = App.instance?.appDatabase!!
+    private val _mutableConfig = MutableLiveData<Config>()
+    val config: LiveData<Config> get() = _mutableConfig
+
+    private val _mutableError = MutableLiveData<ErrorResult>()
+    val error: LiveData<ErrorResult> get() = _mutableError
+
+    private val db: AppDatabase = App.instance.appDatabase
 
     init {
         viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
             Log.d("M_MoviesViewModel", "$exception")
         }) {
+            val repo = MoviesRepository(
+                db.configDao(),
+                db.genreDao(),
+                db.movieDao(),
+                RetrofitModule.configApi,
+                RetrofitModule.genresApi,
+                RetrofitModule.moviesApi
+            )
 
-//            val configPersist = db.configDao().getConfig()
-            val genresPersist = db.genreDao().getAll()
-            val moviesPersist = db.movieDao().getAll()
-
-            val dbMovieRes = mutableListOf<MovieElement>().apply {
-                add(0, MovieElement.Header(-1, "Header", "Some image"))
-                addAll(MoviesMapperDbToUi.transformList(moviesPersist, genresPersist))
+            repo.getConfigDb().collect {
+                _mutableConfig.postValue(it)
             }
 
-            _mutableMoviesList.postValue(dbMovieRes)
-
-            _mutableConfig.postValue(RetrofitModule.configApi.getConfig(API_KEY))
-            val genres =
-                GenresMapperApiToUi.transformList(RetrofitModule.genresApi.getGenresResponse(API_KEY).genres)
-                    .also {
-                        db.genreDao().insertAll(GenresMapperUiToDb.transformList(it))
-                    }
-            val movies =
-                MoviesMapperApiToUi.transformList(
-                    RetrofitModule.moviesApi.getMoviesResponse(API_KEY).results,
-                    _mutableConfig.value!!,
-                    genres
-                ).also {
-                    db.movieDao().insertAll(MoviesMapperUiToDb.transformList(it))
+            try {
+                repo.getConfig().collect {
+                    _mutableConfig.postValue(it)
                 }
-
-            val moviesResult = mutableListOf<MovieElement>().apply {
-                add(0, MovieElement.Header(-1, "Header", "Some image"))
-                addAll(movies)
+            } catch (e: Exception) {
+                _mutableError.postValue(ErrorResult(e))
+                Log.d("M_MoviesViewModel", "config not load")
             }
-            _mutableMoviesList.postValue(moviesResult)
+
+
+            repo.getMoviesDb().collect {
+                _mutableMoviesList.postValue(ValidResult(it))
+            }
+
+            try {
+                repo.getMovies(_mutableConfig.value!!).collect {
+                    _mutableMoviesList.postValue(ValidResult(it))
+                }
+            } catch (e: Exception) {
+                _mutableError.postValue(ErrorResult(e))
+                Log.d("M_MoviesViewModel", "movies not load")
+            }
         }
     }
 
-    fun getMovie(movieId: Int) = _mutableMoviesList.value?.find { it.id == movieId }
+    fun getMovie(movieId: Int) =
+        _mutableMoviesList.value!!.result.find { it.id == movieId }
+
 }

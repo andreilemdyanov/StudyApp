@@ -1,9 +1,10 @@
-package ru.fundamentals.studyapp.data.room
+package ru.fundamentals.studyapp.data.room.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import ru.fundamentals.studyapp.data.room.ListTypeConverters
 
 @Entity(tableName = "movies")
 @TypeConverters(ListTypeConverters::class)

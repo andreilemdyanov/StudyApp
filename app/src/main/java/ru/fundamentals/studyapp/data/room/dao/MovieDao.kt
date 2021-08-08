@@ -1,9 +1,10 @@
-package ru.fundamentals.studyapp.data.room
+package ru.fundamentals.studyapp.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import ru.fundamentals.studyapp.data.room.models.MovieDb
 
 @Dao
 interface MovieDao {

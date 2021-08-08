@@ -22,7 +22,7 @@ class App : Application() {
     }
 
     companion object {
-        var instance: App? = null
+        lateinit var instance: App
     }
 
 }
