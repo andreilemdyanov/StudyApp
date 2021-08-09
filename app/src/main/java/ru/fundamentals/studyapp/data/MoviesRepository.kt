@@ -38,9 +38,6 @@ class MoviesRepository(
     }
 
     fun getConfig() = flow {
-        val configPersist = configDao.getConfig()
-        emit((configPersist ?: ConfigDb(1, "", "", "", "")).toConfig())
-
         val config = configApi.getConfig(API_KEY).toConfig().also {
             configDao.insert(it.toConfigDb())
         }
@@ -53,8 +50,6 @@ class MoviesRepository(
     }
 
     fun getGenres() = flow {
-        val genresPersist = genreDao.getAll()
-        emit(genresPersist.map { it.toGenre() })
         val genres =
             genreApi.getGenresResponse(API_KEY).genres.map { it.toGenre() }
                 .also {
