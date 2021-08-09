@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
+import ru.fundamentals.studyapp.data.network.TokenInterceptor
 
 object RetrofitModule {
     private val json = Json {
@@ -15,6 +16,7 @@ object RetrofitModule {
     }
     private val client = OkHttpClient().newBuilder()
         .addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(TokenInterceptor())
         .build()
 
     @Suppress("EXPERIMENTAL_API_USAGE")

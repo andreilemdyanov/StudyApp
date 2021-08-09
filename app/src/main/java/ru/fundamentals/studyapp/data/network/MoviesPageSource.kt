@@ -31,9 +31,9 @@ class MoviesPageSource(
         val page: Int = params.key ?: 1
         val pageSize: Int = params.loadSize.coerceAtMost(20)
 
-        val moviesResponse = moviesApi.getMoviesResponse(API_KEY, page)
-        val configResponse = configApi.getConfig(API_KEY)
-        val genresResponse = genresApi.getGenresResponse(API_KEY)
+        val moviesResponse = moviesApi.getMoviesResponse(page)
+        val configResponse = configApi.getConfig()
+        val genresResponse = genresApi.getGenresResponse()
         val mapGenres = genresResponse.genres
             .map { it.toGenre() }
             .associateBy { it.id }

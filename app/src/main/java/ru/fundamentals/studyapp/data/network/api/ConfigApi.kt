@@ -6,5 +6,5 @@ import ru.fundamentals.studyapp.data.network.models.ConfigResponse
 
 interface ConfigApi {
     @GET("configuration")
-    suspend fun getConfig(@Query("api_key") apiKey: String): ConfigResponse
+    suspend fun getConfig(): ConfigResponse
 }

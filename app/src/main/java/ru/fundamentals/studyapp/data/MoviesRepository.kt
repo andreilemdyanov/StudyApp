@@ -38,7 +38,7 @@ class MoviesRepository(
     }
 
     fun getConfig() = flow {
-        val config = configApi.getConfig(API_KEY).toConfig().also {
+        val config = configApi.getConfig().toConfig().also {
             configDao.insert(it.toConfigDb())
         }
         emit(config)
@@ -51,7 +51,7 @@ class MoviesRepository(
 
     fun getGenres() = flow {
         val genres =
-            genreApi.getGenresResponse(API_KEY).genres.map { it.toGenre() }
+            genreApi.getGenresResponse().genres.map { it.toGenre() }
                 .also {
                     genreDao.insertAll(it.map { genre -> genre.toGenreDb() })
                 }
@@ -85,7 +85,7 @@ class MoviesRepository(
 
         val mapGenres = genres.associateBy { it.id }
         val movies =
-            checkNotNull(movieApi.getMoviesResponse(API_KEY).body()).results.map {
+            checkNotNull(movieApi.getMoviesResponse().body()).results.map {
                 it.toMovie(config, mapGenres)
             }.also {
                 movieDao.insertAll(it.map { movie -> movie.toMovieDb() })

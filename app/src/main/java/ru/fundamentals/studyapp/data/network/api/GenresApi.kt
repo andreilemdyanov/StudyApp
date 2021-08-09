@@ -6,5 +6,5 @@ import ru.fundamentals.studyapp.data.network.models.GenresResponse
 
 interface GenresApi {
     @GET("genre/movie/list")
-    suspend fun getGenresResponse(@Query("api_key") apiKey: String): GenresResponse
+    suspend fun getGenresResponse(): GenresResponse
 }

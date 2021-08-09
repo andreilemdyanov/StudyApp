@@ -25,7 +25,7 @@ class MovieDetailsViewModel : ViewModel() {
             Log.d("M_MovieDetailsViewModel", "$exception")
 
         }) {
-            _mutableRunTime.postValue(RetrofitModule.moviesApi.getMovieDetails(movieId, API_KEY))
+            _mutableRunTime.postValue(RetrofitModule.moviesApi.getMovieDetails(movieId))
         }
     }
 
@@ -33,7 +33,7 @@ class MovieDetailsViewModel : ViewModel() {
         viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
             Log.d("M_MovieDetailsViewModel", "$exception")
         }) {
-            _mutableCrewList.postValue(RetrofitModule.moviesApi.getMovieCrew(movieId, API_KEY).cast)
+            _mutableCrewList.postValue(RetrofitModule.moviesApi.getMovieCrew(movieId).cast)
         }
     }
 }
