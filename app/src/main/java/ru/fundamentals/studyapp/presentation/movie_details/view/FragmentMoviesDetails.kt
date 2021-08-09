@@ -104,6 +104,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
                 tvStoryOverview.text = movie.overview
                 ivBackdrop.load(movie.backdrop) {
                     crossfade(true)
+                    placeholder(R.color.dark_blue)
                     error(R.color.dark_blue)
                     fallback(R.color.dark_blue)
                 }

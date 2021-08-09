@@ -2,6 +2,7 @@ package ru.fundamentals.studyapp.presentation.movie_list.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -11,14 +12,14 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesListBinding
 import ru.fundamentals.studyapp.presentation.movie_list.viewmodel.MoviesViewModel
+import java.net.UnknownHostException
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
@@ -26,6 +27,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     private val viewModel: MoviesViewModel by activityViewModels()
     private val binding by viewBinding(FragmentMoviesListBinding::bind)
     private val adapter by lazy { MoviesAdapter(clickListenerItem) }
+    lateinit var job: Job
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,7 +65,16 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
+        job = CoroutineScope(Dispatchers.Main).launch(CoroutineExceptionHandler { _, exception ->
+            Log.d("M_FragmentMoviesList", "$exception")
+            when (exception) {
+                is UnknownHostException -> Snackbar.make(
+                    binding.root,
+                    "Нет соединения с интернетом",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }) {
             viewModel.moviesPs.collectLatest {
                 adapter.submitData(it)
             }
@@ -71,13 +82,20 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         viewModel.error.observe(
             this.viewLifecycleOwner
         ) {
-            Toast.makeText(requireContext(), it.e.toString(), Toast.LENGTH_SHORT).show()
+            when (it) {
+                is UnknownHostException -> Snackbar.make(
+                    binding.root,
+                    "Нет соединения с интернетом",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         clickListener = null
+        job.cancel()
     }
 
     private fun doOnClick(movie: MovieElement) {

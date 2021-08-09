@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ru.fundamentals.studyapp.App
 import ru.fundamentals.studyapp.data.network.api.RetrofitModule
 import ru.fundamentals.studyapp.data.network.models.CastDto
 import ru.fundamentals.studyapp.data.network.models.RunTimeDto
-import ru.fundamentals.studyapp.util.API_KEY
 
 class MovieDetailsViewModel : ViewModel() {
 
@@ -20,12 +20,14 @@ class MovieDetailsViewModel : ViewModel() {
     private val _mutableCrewList = MutableLiveData<List<CastDto>>()
     val crewList: LiveData<List<CastDto>> get() = _mutableCrewList
 
+    private val retrofit : RetrofitModule = App.instance.retrofit
+
     fun getMovieRuntime(movieId: Int) {
         viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
             Log.d("M_MovieDetailsViewModel", "$exception")
 
         }) {
-            _mutableRunTime.postValue(RetrofitModule.moviesApi.getMovieDetails(movieId))
+            _mutableRunTime.postValue(retrofit.moviesApi.getMovieDetails(movieId))
         }
     }
 
@@ -33,7 +35,7 @@ class MovieDetailsViewModel : ViewModel() {
         viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
             Log.d("M_MovieDetailsViewModel", "$exception")
         }) {
-            _mutableCrewList.postValue(RetrofitModule.moviesApi.getMovieCrew(movieId).cast)
+            _mutableCrewList.postValue(retrofit.moviesApi.getMovieCrew(movieId).cast)
         }
     }
 }

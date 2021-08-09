@@ -9,16 +9,11 @@ import retrofit2.Retrofit
 import retrofit2.create
 import ru.fundamentals.studyapp.data.network.TokenInterceptor
 
-object RetrofitModule {
+class RetrofitModule(client: OkHttpClient) {
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
     }
-    private val client = OkHttpClient().newBuilder()
-        .addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .addInterceptor(TokenInterceptor())
-        .build()
-
     @Suppress("EXPERIMENTAL_API_USAGE")
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")

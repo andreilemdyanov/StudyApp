@@ -80,6 +80,7 @@ sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             preview.load(movie.poster) {
                 error(R.drawable.ic_placeholder_movies_24)
+                placeholder(R.drawable.ic_placeholder_movies_24)
                 fallback(R.drawable.ic_placeholder_movies_24)
                 transformations(RoundedCornersTransformation(8f))
                 crossfade(true)

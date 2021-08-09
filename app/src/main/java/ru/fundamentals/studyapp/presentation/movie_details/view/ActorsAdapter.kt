@@ -33,6 +33,7 @@ class ActorHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         name.text = actor.name
         image.load(actor.picture) {
             error(R.drawable.ic_baseline_person_24)
+            placeholder(R.drawable.ic_baseline_person_24)
             fallback(R.drawable.ic_baseline_person_24)
             transformations(RoundedCornersTransformation(10f))
             crossfade(true)
