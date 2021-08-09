@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -16,7 +16,7 @@ import kotlin.math.roundToInt
 
 class MoviesAdapter(
     private val clickListener: (MovieElement) -> Unit
-) : ListAdapter<MovieElement, ViewHolder>(MoviesDiffCallback()) {
+) : PagingDataAdapter<MovieElement, ViewHolder>(MoviesDiffCallback()) {
 
     fun isHeader(position: Int) = position == 0
 
@@ -47,7 +47,7 @@ class MoviesAdapter(
             is ViewHolder.Movie -> {
                 holder.bind(getItem(position) as MovieElement.Movie)
                 holder.itemView.setOnClickListener {
-                    clickListener(getItem(position))
+                    clickListener(getItem(position)!!)
                 }
             }
         }
@@ -109,4 +109,3 @@ sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 }
-

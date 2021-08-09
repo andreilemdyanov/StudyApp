@@ -1,8 +1,13 @@
 package ru.fundamentals.studyapp.data
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.fundamentals.studyapp.data.models.*
+import ru.fundamentals.studyapp.data.network.MoviesPageSource
 import ru.fundamentals.studyapp.data.network.api.ConfigApi
 import ru.fundamentals.studyapp.data.network.api.GenresApi
 import ru.fundamentals.studyapp.data.network.api.MoviesApi
@@ -25,7 +30,6 @@ class MoviesRepository(
     private val configApi: ConfigApi,
     private val genreApi: GenresApi,
     private val movieApi: MoviesApi
-
 ) {
 
     fun getConfigDb() = flow {
@@ -84,12 +88,6 @@ class MoviesRepository(
         }
         emit(dbMovieRes)
 
-//        val config = RetrofitModule.configApi.getConfig(API_KEY)
-//        val genres =
-//            GenresMapperApiToUi.transformList(genreApi.getGenresResponse(API_KEY).genres)
-//                .also {
-//                    genreDao.insertAll(GenresMapperUiToDb.transformList(it))
-//                }
         val mapGenres = genres.associateBy { it.id }
         val movies =
             checkNotNull(movieApi.getMoviesResponse(API_KEY).body()).results.map {
@@ -103,5 +101,11 @@ class MoviesRepository(
             addAll(movies)
         }
         emit(moviesResult)
+    }
+
+    fun getMoviesStream(): Flow<PagingData<MovieElement>> {
+        return Pager(PagingConfig(20),
+            pagingSourceFactory = { MoviesPageSource(movieApi, configApi, genreApi) }
+        ).flow
     }
 }

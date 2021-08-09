@@ -1,9 +1,10 @@
 package ru.fundamentals.studyapp.data.models
 
 import ru.fundamentals.studyapp.data.room.models.MovieDb
+import java.io.Serializable
 
 
-sealed class MovieElement {
+sealed class MovieElement : Serializable {
     abstract val id: Int
 
     data class Movie(

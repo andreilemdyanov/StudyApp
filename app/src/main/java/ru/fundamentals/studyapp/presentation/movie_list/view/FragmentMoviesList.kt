@@ -2,25 +2,27 @@ package ru.fundamentals.studyapp.presentation.movie_list.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.fundamentals.studyapp.R
-import ru.fundamentals.studyapp.data.ValidResult
 import ru.fundamentals.studyapp.data.models.MovieElement
 import ru.fundamentals.studyapp.databinding.FragmentMoviesListBinding
 import ru.fundamentals.studyapp.presentation.movie_list.viewmodel.MoviesViewModel
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    lateinit var adapter: MoviesAdapter
     private var clickListener: ClickListener? = null
     private val viewModel: MoviesViewModel by activityViewModels()
     private val binding by viewBinding(FragmentMoviesListBinding::bind)
+    private val adapter by lazy { MoviesAdapter(clickListenerItem) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,14 +32,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MoviesAdapter(clickListenerItem)
         with(binding) {
             rvMoviesList.adapter = adapter
             val manager =
                 GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
             manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-//                    Log.d("M_FragmentMoviesList", "spanCount = ${manager.spanCount}")
                     return if (adapter.isHeader(position)) manager.spanCount else 1
                 }
             }
@@ -53,11 +53,10 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     override fun onStart() {
         super.onStart()
-        viewModel.moviesList.observe(
-            this.viewLifecycleOwner
-        ) {
-            val result = (viewModel.moviesList.value as ValidResult).result
-            adapter.submitList(result.sortedBy { it.id })
+       CoroutineScope(Dispatchers.Main).launch {
+            viewModel.moviesPs.collectLatest {
+                adapter.submitData(it)
+            }
         }
         viewModel.error.observe(
             this.viewLifecycleOwner
@@ -71,15 +70,15 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         clickListener = null
     }
 
-    private fun doOnClick(movieId: Int) {
+    private fun doOnClick(movie: MovieElement) {
         binding.rvMoviesList.let {
-            clickListener?.onMoviesDetailsClick(movieId)
+            clickListener?.onMoviesDetailsClick(movie)
         }
     }
 
     private val clickListenerItem = { movie: MovieElement ->
         if (movie is MovieElement.Movie)
-            doOnClick(movie.id)
+            doOnClick(movie)
     }
 
     companion object {
@@ -88,7 +87,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     interface ClickListener {
-        fun onMoviesDetailsClick(movieId: Int)
+        fun onMoviesDetailsClick(movie: MovieElement)
     }
 }
 

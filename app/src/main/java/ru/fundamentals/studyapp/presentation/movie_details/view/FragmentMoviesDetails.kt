@@ -88,10 +88,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.apply {
-            val movieId = getInt(MOVIE)
-            viewModel.getMovieRuntime(movieId)
-            viewModel.getMovieCrew(movieId)
-            movie = viewModelMovies.getMovie(movieId) as MovieElement.Movie
+            movie = getSerializable(MOVIE) as MovieElement.Movie
+            viewModel.getMovieRuntime(movie.id)
+            viewModel.getMovieCrew(movie.id)
             with(binding) {
                 toolbar.setNavigationOnClickListener { clickListener?.onBackFragmentMoviesListClick() }
                 appBar.addOnOffsetChangedListener(this@FragmentMoviesDetails)
@@ -156,9 +155,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movies_details),
         private const val MOVIE = "movie"
 
         @JvmStatic
-        fun newInstance(movieId: Int) = FragmentMoviesDetails().apply {
+        fun newInstance(movie: MovieElement) = FragmentMoviesDetails().apply {
             arguments = Bundle().apply {
-                putInt(MOVIE, movieId)
+                putSerializable(MOVIE, movie)
             }
         }
     }
