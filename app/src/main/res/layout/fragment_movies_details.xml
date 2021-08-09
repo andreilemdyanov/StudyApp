@@ -78,11 +78,10 @@
         android:background="@color/dark_blue"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/motionLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutDescription="@xml/fragment_movies_details_xml_constraintlayout_scene">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_genre"
@@ -103,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
@@ -113,6 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_3"
+                app:layout_constraintStart_toEndOf="@id/iv_star_1"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
 
@@ -122,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_4"
                 app:layout_constraintStart_toEndOf="@id/iv_star_2"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
@@ -132,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginTop="@dimen/normal_margin"
+                app:layout_constraintEnd_toStartOf="@id/iv_star_5"
                 app:layout_constraintStart_toEndOf="@id/iv_star_3"
                 app:layout_constraintTop_toBottomOf="@id/tv_genre"
                 tools:src="@drawable/ic_star_icon_pink_12" />
@@ -160,6 +164,19 @@
                 tools:text="@string/counter_reviews" />
 
             <TextView
+                android:id="@+id/tv_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:fontFamily="@font/roboto_black"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="@dimen/normal_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_number_of_ratings"
+                tools:text="@string/duration" />
+
+            <TextView
                 android:id="@+id/tv_story_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -170,7 +187,7 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/normal_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_star_1" />
+                app:layout_constraintTop_toBottomOf="@id/tv_runtime" />
 
             <TextView
                 android:id="@+id/tv_story_overview"
@@ -211,6 +228,7 @@
                 android:layout_marginTop="@dimen/normal_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:scrollbars="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_cast"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -218,6 +236,6 @@
                 tools:orientation="horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
