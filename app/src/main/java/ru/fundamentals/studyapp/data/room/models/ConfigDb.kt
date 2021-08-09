@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import ru.fundamentals.studyapp.data.models.Config
 import ru.fundamentals.studyapp.data.room.ListTypeConverters
 
 @Entity(tableName = "config")
@@ -25,3 +26,11 @@ data class ConfigDb(
     @ColumnInfo(name = "profile_size")
     val profileSize: String
 )
+
+fun ConfigDb.toConfig() =
+    Config(
+        secureBaseUrl,
+        posterSize,
+        backdropSize,
+        profileSize
+    )

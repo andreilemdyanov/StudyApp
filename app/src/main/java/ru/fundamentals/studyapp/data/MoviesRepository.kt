@@ -2,16 +2,20 @@ package ru.fundamentals.studyapp.data
 
 import android.util.Log
 import kotlinx.coroutines.flow.flow
-import ru.fundamentals.studyapp.data.mappers.*
-import ru.fundamentals.studyapp.data.models.Config
-import ru.fundamentals.studyapp.data.models.MovieElement
+import ru.fundamentals.studyapp.data.models.*
 import ru.fundamentals.studyapp.data.network.api.ConfigApi
 import ru.fundamentals.studyapp.data.network.api.GenresApi
 import ru.fundamentals.studyapp.data.network.api.MoviesApi
+import ru.fundamentals.studyapp.data.network.models.toConfig
+import ru.fundamentals.studyapp.data.network.models.toGenre
+import ru.fundamentals.studyapp.data.network.models.toMovie
 import ru.fundamentals.studyapp.data.room.dao.ConfigDao
-import ru.fundamentals.studyapp.data.room.models.ConfigDb
 import ru.fundamentals.studyapp.data.room.dao.GenreDao
 import ru.fundamentals.studyapp.data.room.dao.MovieDao
+import ru.fundamentals.studyapp.data.room.models.ConfigDb
+import ru.fundamentals.studyapp.data.room.models.toConfig
+import ru.fundamentals.studyapp.data.room.models.toGenre
+import ru.fundamentals.studyapp.data.room.models.toMovie
 import ru.fundamentals.studyapp.util.API_KEY
 
 class MoviesRepository(
@@ -26,17 +30,33 @@ class MoviesRepository(
 
     fun getConfigDb() = flow {
         val configPersist = configDao.getConfig()
-        emit(ConfigMapperDbToUi.transform(configPersist ?: ConfigDb(1, "", "", "", "")))
+        emit((configPersist ?: ConfigDb(1, "", "", "", "")).toConfig())
     }
 
     fun getConfig() = flow {
         val configPersist = configDao.getConfig()
-        emit(ConfigMapperDbToUi.transform(configPersist ?: ConfigDb(1, "", "", "", "")))
+        emit((configPersist ?: ConfigDb(1, "", "", "", "")).toConfig())
 
-        val config = ConfigMapperApiToUi.transform(configApi.getConfig(API_KEY)).also {
-            configDao.insert(ConfigMapperUiToDb.transform(it))
+        val config = configApi.getConfig(API_KEY).toConfig().also {
+            configDao.insert(it.toConfigDb())
         }
         emit(config)
+    }
+
+    fun getGenresDb() = flow {
+        val genresPersist = genreDao.getAll()
+        emit(genresPersist.map { it.toGenre() })
+    }
+
+    fun getGenres() = flow {
+        val genresPersist = genreDao.getAll()
+        emit(genresPersist.map { it.toGenre() })
+        val genres =
+            genreApi.getGenresResponse(API_KEY).genres.map { it.toGenre() }
+                .also {
+                    genreDao.insertAll(it.map { genre -> genre.toGenreDb() })
+                }
+        emit(genres)
     }
 
     fun getMoviesDb() = flow<List<MovieElement>> {
@@ -44,39 +64,38 @@ class MoviesRepository(
         val moviesPersist = movieDao.getAll()
         Log.d("M_MoviesRepository", "genresPersist = $genresPersist")
         Log.d("M_MoviesRepository", "moviesPersist = $moviesPersist")
-
+        val mapGenres = genresPersist.associateBy { it.id }
         val dbMovieRes = mutableListOf<MovieElement>().apply {
             add(0, MovieElement.Header(-1, "Header", "Some image"))
-            addAll(MoviesMapperDbToUi.transformList(moviesPersist, genresPersist))
+            addAll(moviesPersist.map { it.toMovie(mapGenres) })
         }
         emit(dbMovieRes)
     }
 
-    fun getMovies(config: Config) = flow<List<MovieElement>> {
+    fun getMovies(config: Config, genres: List<Genre>) = flow<List<MovieElement>> {
         val genresPersist = genreDao.getAll()
         val moviesPersist = movieDao.getAll()
         Log.d("M_MoviesRepository", "genresPersist = $genresPersist")
         Log.d("M_MoviesRepository", "moviesPersist = $moviesPersist")
-
+        val mapGenresDb = genresPersist.associateBy { it.id }
         val dbMovieRes = mutableListOf<MovieElement>().apply {
             add(0, MovieElement.Header(-1, "Header", "Some image"))
-            addAll(MoviesMapperDbToUi.transformList(moviesPersist, genresPersist))
+            addAll(moviesPersist.map { it.toMovie(mapGenresDb) })
         }
         emit(dbMovieRes)
 
 //        val config = RetrofitModule.configApi.getConfig(API_KEY)
-        val genres =
-            GenresMapperApiToUi.transformList(genreApi.getGenresResponse(API_KEY).genres)
-                .also {
-                    genreDao.insertAll(GenresMapperUiToDb.transformList(it))
-                }
+//        val genres =
+//            GenresMapperApiToUi.transformList(genreApi.getGenresResponse(API_KEY).genres)
+//                .also {
+//                    genreDao.insertAll(GenresMapperUiToDb.transformList(it))
+//                }
+        val mapGenres = genres.associateBy { it.id }
         val movies =
-            MoviesMapperApiToUi.transformList(
-                movieApi.getMoviesResponse(API_KEY).results,
-                config,
-                genres
-            ).also {
-                movieDao.insertAll(MoviesMapperUiToDb.transformList(it))
+            checkNotNull(movieApi.getMoviesResponse(API_KEY).body()).results.map {
+                it.toMovie(config, mapGenres)
+            }.also {
+                movieDao.insertAll(it.map { movie -> movie.toMovieDb() })
             }
 
         val moviesResult = mutableListOf<MovieElement>().apply {

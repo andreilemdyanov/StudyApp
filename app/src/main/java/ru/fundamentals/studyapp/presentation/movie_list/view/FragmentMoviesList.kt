@@ -37,7 +37,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
                 GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
             manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    Log.d("M_FragmentMoviesList", "spanCount = ${manager.spanCount}")
+//                    Log.d("M_FragmentMoviesList", "spanCount = ${manager.spanCount}")
                     return if (adapter.isHeader(position)) manager.spanCount else 1
                 }
             }
@@ -77,11 +77,9 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    private val clickListenerItem = object : MoviesAdapter.OnRecyclerMovieClicked {
-        override fun onClick(movie: MovieElement) {
-            if (movie is MovieElement.Movie)
-                doOnClick(movie.id)
-        }
+    private val clickListenerItem = { movie: MovieElement ->
+        if (movie is MovieElement.Movie)
+            doOnClick(movie.id)
     }
 
     companion object {

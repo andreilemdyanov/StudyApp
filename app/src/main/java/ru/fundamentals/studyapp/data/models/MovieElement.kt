@@ -1,5 +1,7 @@
 package ru.fundamentals.studyapp.data.models
 
+import ru.fundamentals.studyapp.data.room.models.MovieDb
+
 
 sealed class MovieElement {
     abstract val id: Int
@@ -24,3 +26,14 @@ sealed class MovieElement {
         val image: String,
     ) : MovieElement()
 }
+
+fun MovieElement.Movie.toMovieDb() =
+    MovieDb(
+        id.toLong(),
+        overview,
+        title,
+        genres.map { genre -> genre.id },
+        ratings,
+        minimumAge != 13,
+        numberOfRatings
+    )

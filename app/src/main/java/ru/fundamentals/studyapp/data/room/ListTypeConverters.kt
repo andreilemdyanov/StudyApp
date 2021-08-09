@@ -10,13 +10,13 @@ class ListTypeConverters {
     private val gson = Gson()
 
     @TypeConverter
-    fun convertListLongToString(list: List<Long>): String{
+    fun convertListIntToString(list: List<Int>): String{
         return gson.toJson(list)
     }
 
     @TypeConverter
-    fun convertStringToListLong(string: String): List<Long>{
-        val type = object : TypeToken<List<Long?>?>() {}.type
+    fun convertStringToListInt(string: String): List<Int>{
+        val type = object : TypeToken<List<Int?>?>() {}.type
         return gson.fromJson(string, type)
     }
 

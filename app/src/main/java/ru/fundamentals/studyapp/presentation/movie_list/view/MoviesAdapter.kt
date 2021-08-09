@@ -11,12 +11,11 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import ru.fundamentals.studyapp.R
 import ru.fundamentals.studyapp.data.models.MovieElement
-import ru.fundamentals.studyapp.presentation.movie_list.view.MoviesDiffCallback
 import ru.fundamentals.studyapp.util.setRating
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
-    private val clickListener: OnRecyclerMovieClicked
+    private val clickListener: (MovieElement) -> Unit
 ) : ListAdapter<MovieElement, ViewHolder>(MoviesDiffCallback()) {
 
     fun isHeader(position: Int) = position == 0
@@ -48,7 +47,7 @@ class MoviesAdapter(
             is ViewHolder.Movie -> {
                 holder.bind(getItem(position) as MovieElement.Movie)
                 holder.itemView.setOnClickListener {
-                    clickListener.onClick(getItem(position))
+                    clickListener(getItem(position))
                 }
             }
         }
@@ -64,10 +63,6 @@ class MoviesAdapter(
     enum class Type {
         HEADER,
         MOVIE
-    }
-
-    interface OnRecyclerMovieClicked {
-        fun onClick(movie: MovieElement)
     }
 }
 
