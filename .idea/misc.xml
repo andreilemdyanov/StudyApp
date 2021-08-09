@@ -6,6 +6,8 @@
         <entry key="..\:/Projects/StudyApp/app/src/main/res/layout/activity_movie_details.xml" value="0.2015625" />
         <entry key="..\:/Projects/StudyApp/app/src/main/res/layout/fragment_movies_details.xml" value="0.2015625" />
         <entry key="..\:/Projects/StudyApp/app/src/main/res/layout/fragment_movies_list.xml" value="0.38645833333333335" />
+        <entry key="..\:/Projects/StudyApp/app/src/main/res/layout/item_error.xml" value="0.38645833333333335" />
+        <entry key="..\:/Projects/StudyApp/app/src/main/res/layout/item_progress.xml" value="0.38645833333333335" />
       </map>
     </option>
   </component>

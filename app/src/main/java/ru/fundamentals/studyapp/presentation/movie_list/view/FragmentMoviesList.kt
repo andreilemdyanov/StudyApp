@@ -4,8 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +36,10 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            rvMoviesList.adapter = adapter
+            rvMoviesList.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = MoviesLoaderStateAdapter(),
+                footer = MoviesLoaderStateAdapter()
+            )
             val manager =
                 GridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_count))
             manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -48,12 +54,16 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
                 )
             )
             rvMoviesList.layoutManager = manager
+            adapter.addLoadStateListener { state: CombinedLoadStates ->
+                rvMoviesList.isVisible = state.refresh != LoadState.Loading
+                progress.isVisible = state.refresh == LoadState.Loading
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
-       CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             viewModel.moviesPs.collectLatest {
                 adapter.submitData(it)
             }
